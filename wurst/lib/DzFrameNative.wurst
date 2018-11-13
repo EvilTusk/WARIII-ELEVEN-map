@@ -1,0 +1,185 @@
+package DzFrameNative
+
+/////////////////////////////// 自定义UI
+//取rgba色值
+public native DzGetColor(integer r, integer g, integer b, integer a) returns integer
+
+//设置界面更新回调（非同步）
+public native DzFrameSetUpdateCallback(string func)
+
+//显示/隐藏Frame
+public native DzFrameShow(integer frame, boolean enable)
+
+//创建frame
+public native DzCreateFrame(string frame, integer parent, integer id) returns integer
+
+//创建SimpleFrame
+public native DzCreateSimpleFrame(string frame, integer parent, integer id) returns integer
+
+//销毁frame
+public native DzDestroyFrame(integer frame)
+
+//加载toc
+public native DzLoadToc(string fileName)
+
+//设置frame相对位置
+public native DzFrameSetPoint(integer frame, integer point, integer relativeFrame, integer relativePoint, real x, real y)
+
+//设置frame绝对位置
+public native DzFrameSetAbsolutePoint(integer frame, integer point, real x, real y)
+
+//清空frame锚点
+public native DzFrameClearAllPoints(integer frame)
+
+//设置frame禁用/启用
+public native DzFrameSetEnable(integer name, boolean enable)
+
+//注册UI事件回调
+public native DzFrameSetScript(integer frame, integer eventId, string func, boolean sync)
+
+//获取触发ui的玩家
+public native DzGetTriggerUIEventPlayer() returns player
+
+//查找frame
+public native DzFrameFindByName(string name, integer id) returns integer
+
+//查找SimpleFrame
+public native DzSimpleFrameFindByName(string name, integer id) returns integer
+
+//查找String
+public native DzSimpleFontStringFindByName(string name, integer id) returns integer
+
+//查找Texture
+public native DzSimpleTextureFindByName(string name, integer id) returns integer
+
+//点击frame
+public native DzClickFrame(integer frame)
+
+//自定义屏幕比例
+public native DzSetCustomFovFix(real value)
+
+//使用宽屏模式
+public native DzEnableWideScreen(boolean enable)
+
+//设置文字（支持EditBox, TextFrame, TextArea, SimpleFontString、GlueEditBoxWar3、SlashChatBox、TimerTextFrame、TextButtonFrame、GlueTextButton）
+public native DzFrameSetText(integer frame, string text)
+
+//获取文字（支持EditBox, TextFrame, TextArea, SimpleFontString）
+public native DzFrameGetText(integer frame) returns string
+
+//设置字数限制（支持EditBox）
+public native DzFrameSetTextSizeLimit(integer frame, integer size)
+
+//获取字数限制（支持EditBox）
+public native DzFrameGetTextSizeLimit(integer frame) returns integer
+
+//设置文字颜色（支持TextFrame, EditBox）
+public native DzFrameSetTextColor(integer frame, integer color)
+
+//获取鼠标所在位置的ui控件指针
+public native DzGetMouseFocus() returns integer
+
+//设置所有锚点到目标frame上
+public native DzFrameSetAllPoints(integer frame, integer relativeFrame) returns boolean
+
+//设置焦点
+public native DzFrameSetFocus(integer frame, boolean enable) returns boolean
+
+//设置模型（支持Sprite、Model、StatusBar）
+public native DzFrameSetModel(integer frame, string modelFile, integer modelType, integer flag)
+
+//获取控件是否启用
+public native DzFrameGetEnable(integer frame) returns boolean
+
+//设置透明度（0-255）
+public native DzFrameSetAlpha(integer frame, integer alpha)
+
+//获取透明度
+public native DzFrameGetAlpha(integer frame) returns integer
+
+//设置动画
+public native DzFrameSetAnimate(integer frame, integer animId, boolean autocast)
+
+//设置动画进度（autocast为false是可用）
+public native DzFrameSetAnimateOffset(integer frame, real offset)
+
+//设置texture（支持Backdrop、SimpleStatusBar）
+public native DzFrameSetTexture(integer frame, string texture, integer flag)
+
+//设置缩放
+public native DzFrameSetScale(integer frame, real scale)
+
+//设置tooltip
+public native DzFrameSetTooltip(integer frame, integer tooltip)
+
+//鼠标限制在ui内
+public native DzFrameCageMouse(integer frame, boolean enable)
+
+//获取当前值（支持Slider、SimpleStatusBar、StatusBar）
+public native DzFrameGetValue(integer frame) returns real
+
+//设置最大最小值（支持Slider、SimpleStatusBar、StatusBar）
+public native DzFrameSetMinMaxValue(integer frame, real minValue, real maxValue)
+
+//设置Step值（支持Slider）
+public native DzFrameSetStepValue(integer frame, real _step)
+
+//设置当前值（支持Slider、SimpleStatusBar、StatusBar）
+public native DzFrameSetValue(integer frame, real value)
+
+//设置frame大小
+public native DzFrameSetSize(integer frame, real w, real h)
+
+//根据tag创建frame
+public native DzCreateFrameByTagName(string frameType, string name, integer parent, string template, integer id) returns integer
+
+//设置颜色（支持SimpleStatusBar）
+public native DzFrameSetVertexColor(integer frame, integer color)
+
+//隐藏界面元素
+public native DzFrameHideInterface()
+
+//修改游戏世界窗口位置
+public native DzFrameEditBlackBorders(real upperHeight, real bottomHeight)
+
+//头像
+public native DzFrameGetPortrait() returns integer
+
+//小地图
+public native DzFrameGetMinimap() returns integer
+
+//技能按钮
+public native DzFrameGetCommandBarButton(integer row, integer column) returns integer
+
+//英雄按钮
+public native DzFrameGetHeroBarButton(integer buttonId) returns integer
+
+//英雄血条
+public native DzFrameGetHeroHPBar(integer buttonId) returns integer
+
+//英雄蓝条
+public native DzFrameGetHeroManaBar(integer buttonId) returns integer
+
+//道具按钮
+public native DzFrameGetItemBarButton(integer buttonId) returns integer
+
+//小地图按钮
+public native DzFrameGetMinimapButton(integer buttonId) returns integer
+
+//左上菜单按钮
+public native DzFrameGetUpperButtonBarButton(integer buttonId) returns integer
+
+//鼠标提示
+public native DzFrameGetTooltip() returns integer
+
+//聊天信息
+public native DzFrameGetChatMessage() returns integer
+
+//unit message
+public native DzFrameGetUnitMessage() returns integer
+
+//top message
+public native DzFrameGetTopMessage() returns integer
+
+//获取game ui
+public native DzGetGameUI() returns integer

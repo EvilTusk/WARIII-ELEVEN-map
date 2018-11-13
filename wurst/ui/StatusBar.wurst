@@ -1,0 +1,147 @@
+package StatusBar
+
+import DzFrame
+import Timer
+import TimerUtils
+
+class StatusBarStruct
+    private Backdrop hpBar
+    private Backdrop mpBar
+    private Text hpText
+    private Text mpText
+    private Frame hpRevText
+    private Frame mpRevText
+    private Frame heroIcon
+    private unit hero
+
+    construct()
+        hero = null
+
+    ondestroy
+        hero = null
+
+    function show()
+        let gameUI = Frame.getGetGameUI()
+        
+        hpBar = new Frame("BACKDROP", "HpBar", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        mpBar = new Frame("BACKDROP", "MpBar", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        hpText = new Frame("TEXT", "HpText", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Text
+        mpText = new Frame("TEXT", "MpText", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Text
+
+        mpBar.show(true)
+        mpBar.setTexture("UI\\Feedback\\HpbarConsole\\human-healthbar-fill.blp", 0)
+        mpBar.setPoint(FrameAnchorPoint.BOTTOMLEFT, gameUI, FrameAnchorPoint.BOTTOM, -0.12, 0.0003)
+        mpBar.setSize(0.24, 0.015)
+
+        hpBar.show(true)
+        hpBar.setTexture("UI\\Feedback\\HpbarConsole\\human-healthbar-fill.blp", 0)
+        hpBar.setPoint(FrameAnchorPoint.BOTTOMLEFT, mpBar, FrameAnchorPoint.TOPLEFT, 0., 0.0003)
+        hpBar.setSize(0.24, 0.015)
+        
+        mpText.show(true)
+        mpText.setPoint(FrameAnchorPoint.CENTER, mpBar, FrameAnchorPoint.LEFT, 0.12, 0.)
+        mpText.setText("0/0")
+        
+        hpText.show(true)
+        hpText.setPoint(FrameAnchorPoint.CENTER, hpBar, FrameAnchorPoint.LEFT, 0.12, 0.)
+        hpText.setText("0/0")
+ 
+        /*let t = getTimer()
+        t.setData(this castTo int)
+        t.startPeriodic(0.2) ->
+            let t = GetExpiredTimer()
+            while i < 12
+                if udg_Hero[i] != null
+                    break
+                i++
+            
+            if i >= 12
+                return
+            
+            if Player(i) == GetLocalPlayer()
+                let v = GetTimerData(t)
+                ReleaseTimer(t)
+                v.setHero(udg_Hero[i])*/
+
+
+    /*function setHero(unit o) returns boolean
+        int ret
+        let gameUI = DzGetGameUI()
+        var skillIcon
+        
+        hero = o
+
+        let heroIconPath = YDWEGetObjectPropertyString(YDWE_OBJECT_TYPE_UNIT, GetUnitTypeId(hero), "Art")
+        ret = DzCreateFrameByTagName("BACKDROP", "HeroIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0)
+        if ret == 0
+            return false
+            
+        heroIcon = ret
+        DzFrameShow(heroIcon, true)
+        DzFrameSetTexture(heroIcon, heroIconPath, 0)
+        DzFrameSetPoint(heroIcon, 8, m_mpBar, 6, -0.0003, 0.)
+        DzFrameSetSize(heroIcon, 0.03, 0.04)
+
+        for i = 0 to 3
+            skillIcon = DzFrameGetCommandBarButton(2, i)
+            DzFrameShow(skillIcon, true)
+            DzFrameClearAllPoints(skillIcon)
+            DzFrameSetPoint(skillIcon, 6, m_hpBar, 0, 0.03*i, 0.003)
+            DzFrameSetSize(skillIcon, 0.027, 0.036)
+        
+        for i = 0 to 3
+            skillIcon = DzFrameGetCommandBarButton(0, i)
+            DzFrameShow(skillIcon, true)
+            DzFrameClearAllPoints(skillIcon)
+            DzFrameSetPoint(skillIcon, 8, m_mpBar, 6, -(0.03*(3-i) + 0.10), 0.)
+            DzFrameSetSize(skillIcon, 0.027, 0.036)
+        
+        for i = 0 to 1
+            for j = 0 to 2
+                skillIcon = DzFrameGetItemBarButton(i*3 + j)
+                DzFrameShow(skillIcon, true)
+                DzFrameClearAllPoints(skillIcon)
+                DzFrameSetPoint(skillIcon, 6, m_mpBar, 6, 0.026*j + 0.25, 0.034*(1-i))
+                DzFrameSetSize(skillIcon, 0.024, 0.032)
+        
+        skillIcon = DzFrameGetCommandBarButton(1, 3)
+        DzFrameShow(skillIcon, true)
+        DzFrameClearAllPoints(skillIcon)
+        DzFrameSetPoint(skillIcon, 6, m_hpBar, 0, 0.03*5, 0.003)
+        DzFrameSetSize(skillIcon, 0.027, 0.036)
+            
+        let t = NewTimer()
+        SetTimerData(t, this)
+        TimerStart(t, 0.01, true) ->
+            let t = GetExpiredTimer()
+            var v = GetTimerData(t)
+            t = null
+            
+            v.syncHero()
+            
+        return true*/
+
+    /*function syncHero()
+        let heroHp = R2I(GetUnitState(m_hero, UNIT_STATE_LIFE))
+        let heroMaxHp = R2I(GetUnitState(m_hero, UNIT_STATE_MAX_LIFE))
+        let heroMp = R2I(GetUnitState(m_hero, UNIT_STATE_MANA))
+        let heroMaxMp = R2I(GetUnitState(m_hero, UNIT_STATE_MAX_MANA))
+        let curPlayer = GetOwningPlayer(m_hero)
+
+        if curPlayer != GetLocalPlayer()
+            return
+
+        DzFrameSetText(hpText, I2S(heroHp) + "/" + I2S(heroMaxHp))
+        DzFrameSetText(mpText, I2S(heroMp) + "/" + I2S(heroMaxMp))
+        DzFrameSetSize(hpBar, (I2R(heroHp)/I2R(heroMaxHp)) * 0.24, 0.015)
+        DzFrameSetSize(mpBar, (I2R(heroMp)/I2R(heroMaxMp)) * 0.24, 0.015)*/
+
+init
+    StatusBarStruct bar = new StatusBarStruct()
+    SetTimeOfDayScale(0)
+    SetTimeOfDay(0.)
+    Frame.hideInterface()
+    Frame.editBlackBorders(0, 0)
+    destroy Frame.getMinimap()..show(true)
+    bar.show()
+

@@ -1,0 +1,367 @@
+package DzFrame
+import NoWurst
+import DzFrameNative
+
+/////////////////////////////// 自定义UI
+
+//DzFrameSetPoint achor定义，从0开始
+public enum FrameAnchorPoint
+    TOPLEFT
+    TOP
+    TOPRIGHT
+    LEFT
+    CENTER
+    RIGHT
+    BOTTOMLEFT
+    BOTTOM
+    BOTTOMRIGHT
+
+//DzFrameSetScript  注册ui事件的事件ID
+public enum FrameEvent
+    NONE
+    FRAME_EVENT_PRESSED
+    FRAME_MOUSE_ENTER
+    FRAME_MOUSE_LEAVE
+    FRAME_MOUSE_UP
+    FRAME_MOUSE_DOWN
+    FRAME_MOUSE_WHEEL
+    FRAME_CHECKBOX_CHECKED
+    FRAME_CHECKBOX_UNCHECKED
+    FRAME_EDITBOX_TEXT_CHANGED
+    FRAME_POPUPMENU_ITEM_CHANGE_START
+    FRAME_POPUPMENU_ITEM_CHANGED
+    FRAME_MOUSE_DOUBLECLICK
+    FRAME_SPRITE_ANIM_UPDATE
+
+
+public class Frame
+    protected int frameVar
+
+    //构造函数
+    construct()
+        frameVar = 0
+
+    //构造函数
+    construct(int frameVar)
+        this.frameVar = frameVar
+
+    //创建frame
+    construct(string frame, int parent, int id)
+        frameVar = DzCreateFrame(frame, parent, id)
+
+    //根据tag创建frame
+    construct(string frameType, string name, thistype parent, string template, int id)
+        frameVar = DzCreateFrameByTagName(frameType, name, parent.frameVar, template, id)
+
+    //删除frame
+    function delete()
+        DzDestroyFrame(frameVar)
+
+    //查找frame
+    function findByName(string name, int id) returns thistype
+        thistype frame = new Frame(DzFrameFindByName(name, id))
+        return frame
+
+    //显示/隐藏Frame
+    function show(boolean enable)
+        DzFrameShow(frameVar, enable)
+
+    //设置frame相对位置
+    function setPoint(FrameAnchorPoint point, Frame relativeFrame, FrameAnchorPoint relativePoint, real x, real y)
+        DzFrameSetPoint(frameVar, point castTo int, relativeFrame.frameVar, relativePoint castTo int, x, y)
+
+    //设置frame绝对位置
+    function setAbsolutePoint(FrameAnchorPoint point, real x, real y)
+        DzFrameSetAbsolutePoint(frameVar, point castTo int, x, y)
+
+    //清空frame锚点
+    function clearAllPoints()
+        DzFrameClearAllPoints(frameVar)
+
+    //设置frame禁用/启用
+    function setEnable(boolean enable)
+        DzFrameSetEnable(frameVar, enable)
+
+    //注册UI事件回调
+    function setScript(FrameEvent eventId, string func, boolean sync)
+        DzFrameSetScript(frameVar, eventId castTo int, func, sync)
+
+    //获取触发ui的玩家
+    function getTriggerUIEventPlayer() returns player
+        return DzGetTriggerUIEventPlayer()
+
+    //点击frame
+    function clickFrame()
+        DzClickFrame(frameVar)
+
+    //自定义屏幕比例
+    static function setCustomFovFix(real value)
+        DzSetCustomFovFix(value)
+
+    //使用宽屏模式
+    static function enableWideScreen(boolean enable)
+        DzEnableWideScreen(enable)
+
+    //设置所有锚点到目标frame上
+    function setAllPoints(int relativeFrame) returns boolean
+        return DzFrameSetAllPoints(frameVar, relativeFrame)
+
+    //设置焦点
+    function setFocus(boolean enable) returns boolean
+        return DzFrameSetFocus(frameVar, enable)
+
+    //获取控件是否启用
+    function getEnable() returns boolean
+        return DzFrameGetEnable(frameVar)
+
+    //设置透明度（0-255）
+    function setAlpha(int alpha)
+        DzFrameSetAlpha(frameVar, alpha)
+
+    //获取透明度
+    function getAlpha() returns int
+        return DzFrameGetAlpha(frameVar)
+
+    //设置tooltip
+    function setToolTip(Frame tooltip)
+        DzFrameSetTooltip(frameVar, tooltip.frameVar)
+
+    //鼠标限制在ui内
+    function cageMouse(boolean enable)
+        DzFrameCageMouse(frameVar, enable)
+
+    //设置缩放
+    function setScale(real scale)
+        DzFrameSetScale(frameVar, scale)
+
+    //设置frame大小
+    function setSize(real w, real h)
+        DzFrameSetSize(frameVar, w, h)
+
+    //获取鼠标所在位置的ui控件指针
+    static function getMouseFocus() returns thistype
+        thistype frame = new Frame(DzGetMouseFocus())
+        return frame
+
+    //取rgba色值
+    static function getColor(int r, int g, int b, int a) returns int
+        return DzGetColor(r, g, b, a)
+
+    //设置界面更新回调（非同步）
+    static function setUpdateCallback(string func)
+        DzFrameSetUpdateCallback(func)
+
+    //加载toc
+    static function loadToc(string fileName)
+        DzLoadToc(fileName)
+
+    //隐藏界面
+    static function hideInterface()
+        DzFrameHideInterface()
+
+    //修改游戏世界窗口位置
+    static function editBlackBorders(real upperHeight, real bottomHeight)
+        DzFrameEditBlackBorders(upperHeight, bottomHeight)
+    
+    //头像
+    static function getPortrait() returns thistype
+        thistype frame = new Frame(DzFrameGetPortrait())
+        return frame
+
+    //小地图
+    static function getMinimap() returns thistype
+        thistype frame = new Frame(DzFrameGetMinimap())
+        return frame
+        
+    //技能按钮
+    static function getCommandBarButton(int row, int column) returns thistype
+        thistype frame = new Frame(DzFrameGetCommandBarButton(row, column))
+        return frame
+        
+    //英雄按钮
+    static function getHeroBarButton(int buttonId) returns thistype
+        thistype frame = new Frame(DzFrameGetHeroBarButton(buttonId))
+        return frame
+        
+    //英雄血条
+    static function getHeroHPBar(int buttonId) returns thistype
+        thistype frame = new Frame(DzFrameGetHeroHPBar(buttonId))
+        return frame
+        
+    //英雄蓝条
+    static function getHeroManaBar(int buttonId) returns thistype
+        thistype frame = new Frame(DzFrameGetHeroManaBar(buttonId))
+        return frame
+        
+    //道具按钮
+    static function getItemBarButton(int buttonId) returns thistype
+        thistype frame = new Frame(DzFrameGetItemBarButton(buttonId))
+        return frame
+        
+    //小地图按钮
+    static function getMinimapButton(int buttonId) returns thistype
+        thistype frame = new Frame(DzFrameGetMinimapButton(buttonId))
+        return frame
+        
+    //左上菜单按钮
+    static function getGetUpperButtonBarButton(int buttonId) returns thistype
+        thistype frame = new Frame(DzFrameGetUpperButtonBarButton(buttonId))
+        return frame
+        
+    //鼠标提示
+    static function getGetTooltip() returns thistype
+        thistype frame = new Frame(DzFrameGetTooltip())
+        return frame
+        
+    //聊天信息
+    static function getGetChatMessage() returns thistype
+        thistype frame = new Frame(DzFrameGetChatMessage())
+        return frame
+        
+    //unit message
+    static function getGetUnitMessage() returns thistype
+        thistype frame = new Frame(DzFrameGetUnitMessage())
+        return frame
+        
+    //top message
+    static function getGetTopMessage() returns thistype
+        thistype frame = new Frame(DzFrameGetTopMessage())
+        return frame
+
+    //Game UI
+    static function getGetGameUI() returns thistype
+        thistype frame = new Frame(DzGetGameUI())
+        return frame
+    
+
+public class SimpleFrame extends Frame
+    //构造函数
+    construct(int frameVar)
+        this.frameVar = frameVar
+
+    //创建frame
+    construct(string frame, int parent, int id)
+        frameVar = DzCreateSimpleFrame(frame, parent, id)
+
+    //查找SimpleFrame
+    override function findByName(string name, int id) returns thistype
+        thistype frame = new SimpleFrame(DzSimpleFrameFindByName(name, id))
+        return frame
+
+
+public class SimpleFontString extends Frame
+    //构造函数
+    construct(int frameVar)
+        this.frameVar = frameVar
+
+    //查找String
+    override function findByName(string name, int id) returns thistype
+        thistype frame = new SimpleFontString(DzSimpleFontStringFindByName(name, id))
+        return frame
+
+
+public class SimpleTextureString extends Frame
+    //构造函数
+    construct(int frameVar)
+        this.frameVar = frameVar
+
+    //查找Texture
+    override function findByName(string name, int id) returns thistype
+        thistype frame = new SimpleTextureString(DzSimpleFontStringFindByName(name, id))
+        return frame
+
+
+public class Text extends Frame
+    //设置文字（支持EditBox, TextFrame, TextArea, SimpleFontString、GlueEditBoxWar3、SlashChatBox、TimerTextFrame、TextButtonFrame、GlueTextButton）
+    function setText(string text)
+        DzFrameSetText(frameVar, text)
+
+    //获取文字（支持EditBox, TextFrame, TextArea, SimpleFontString）
+    function getText() returns string
+        return DzFrameGetText(frameVar)
+
+    //设置字数限制（支持EditBox）
+    function setSizeLimit(int size)
+        DzFrameSetTextSizeLimit(frameVar, size)
+
+    //获取字数限制（支持EditBox）
+    function getSizeLimit() returns int
+        return DzFrameGetTextSizeLimit(frameVar)
+
+    //设置文字颜色（支持TextFrame, EditBox）
+    function setColor(int color)
+        DzFrameSetTextColor(frameVar, color)
+
+
+public class Model extends Frame
+    //设置模型（支持Sprite、Model、StatusBar）
+    function setModel(string modelFile, int modelType, int flag)
+        DzFrameSetModel(frameVar, modelFile, modelType, flag)
+
+    //设置动画
+    function setAnimate(int animId, boolean autocast)
+        DzFrameSetAnimate(frameVar, animId, autocast)
+
+    //设置动画进度（autocast为false是可用）
+    function setAnimateOffset(real offset)
+        DzFrameSetAnimateOffset(frameVar, offset)
+
+
+public class Backdrop extends Frame
+    //设置texture（支持Backdrop、SimpleStatusBar）
+    function setTexture(string texture, int flag)
+        DzFrameSetTexture(frameVar, texture, flag)
+
+
+public class SimpleStatusBar extends Frame
+    //设置texture（支持Backdrop、SimpleStatusBar）
+    function setTexture(string texture, int flag)
+        DzFrameSetTexture(frameVar, texture, flag)
+
+    //获取当前值（支持Slider、SimpleStatusBar、StatusBar）
+    function getValue() returns real
+        return DzFrameGetValue(frameVar)
+
+    //设置最大最小值（支持Slider、SimpleStatusBar、StatusBar）
+    function setMinMaxValue(real minValue, real maxValue)
+        DzFrameSetMinMaxValue(frameVar, minValue, maxValue)
+
+    //设置当前值（支持Slider、SimpleStatusBar、StatusBar）
+    function setValue(real value)
+        DzFrameSetValue(frameVar, value)
+
+    //设置颜色（支持SimpleStatusBar）
+    function setVertexColor(int color)
+        DzFrameSetVertexColor(frameVar, color)
+
+
+public class Slider extends Frame
+    //获取当前值（支持Slider、SimpleStatusBar、StatusBar）
+    function getValue() returns real
+        return DzFrameGetValue(frameVar)
+
+    //设置最大最小值（支持Slider、SimpleStatusBar、StatusBar）
+    function setMinMaxValue(real minValue, real maxValue)
+        DzFrameSetMinMaxValue(frameVar, minValue, maxValue)
+
+    //设置当前值（支持Slider、SimpleStatusBar、StatusBar）
+    function setValue(real value)
+        DzFrameSetValue(frameVar, value)
+
+    //设置Step值（支持Slider）
+    function setStepValue(real _step)
+        DzFrameSetStepValue(frameVar, _step)
+
+
+public class StatusBar extends Frame
+    //获取当前值（支持Slider、SimpleStatusBar、StatusBar）
+    function getValue() returns real
+        return DzFrameGetValue(frameVar)
+
+    //设置最大最小值（支持Slider、SimpleStatusBar、StatusBar）
+    function setMinMaxValue(real minValue, real maxValue)
+        DzFrameSetMinMaxValue(frameVar, minValue, maxValue)
+
+    //设置当前值（支持Slider、SimpleStatusBar、StatusBar）
+    function setValue(real value)
+        DzFrameSetValue(frameVar, value)
