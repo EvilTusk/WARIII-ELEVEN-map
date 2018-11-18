@@ -3,7 +3,7 @@ projectName: "ELEVEN"
 dependencies:
 - "https://github.com/wurstscript/wurstStdlib2"
 buildMapData:
-  name: "DefaultName"
+  name: "ELEVEN"
   fileName: "DefaultFileName"
-  author: "DefaultAuthor"
-  playerCount: 1
+  author: "EvilTusk"
+  playerCount: 10

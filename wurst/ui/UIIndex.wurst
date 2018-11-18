@@ -1,0 +1,20 @@
+package UIIndex
+import DzFrame
+
+init
+    SetTimeOfDayScale(0)
+    SetTimeOfDay(0.)
+    Frame.hideInterface()
+    Frame.editBlackBorders(0, 0)
+    Frame gameUI = Frame.getGetGameUI()
+    destroy Frame.getGetChatMessage()
+    ..show(true)
+    ..clearAllPoints()
+    ..setPoint(FrameAnchorPoint.BOTTOMLEFT, gameUI, FrameAnchorPoint.BOTTOMLEFT, 0.004, 0.004)
+    ..setSize(0.2, 0.2)
+    destroy Frame.getGetUnitMessage()
+    ..show(true)
+    ..clearAllPoints()
+    ..setPoint(FrameAnchorPoint.TOPLEFT, gameUI, FrameAnchorPoint.TOPLEFT, 0.004, -0.004)
+    ..setPoint(FrameAnchorPoint.BOTTOMRIGHT, gameUI, FrameAnchorPoint.BOTTOMRIGHT, -0.004, 0.004)
+    destroy gameUI

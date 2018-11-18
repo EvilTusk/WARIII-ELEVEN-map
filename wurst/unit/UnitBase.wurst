@@ -1,0 +1,156 @@
+package UnitBase
+import UnitObjEditing
+import HashMap
+
+HashMap<int, UnitBase> unitBaseMap = new HashMap<int, UnitBase>()
+
+
+public function unit.getUnitBase() returns UnitBase
+    let key = this.getHandleId()
+    if unitBaseMap.has(key)
+        return unitBaseMap.get(key)
+    else
+        return null
+
+
+public abstract class UnitBase
+    /** 单位ID */
+    static constant int unitId = 'u000'
+
+    /** 初始攻击 */
+    protected real sAD = 0.
+    /** 初始法强 */
+    protected real sAP = 0.
+    /** 初始防御 */
+    protected real sAR = 0.
+    /** 初始魔抗 */
+    protected real sMR = 0.
+    /** 初始生命 */
+    protected real sHP = 0.
+    /** 初始魔法 */
+    protected real sMP = 0.
+    /** 初始攻速 */
+    protected real sAS = 0.
+    /** 初始移速 */
+    protected real sMS = 0.
+    /** 初始回血 */
+    protected real sRH = 0.
+    /** 初始回蓝 */
+    protected real sRM = 0.
+    /** 初始攻击范围 */
+    protected real sAttackRange = 0.
+    /** 初始是否近战 */
+    protected bool sIsMelee = false
+    /** 初始模型路径 */
+    protected string sUnitModelPath = ""
+
+    /** 成长攻击 */
+    protected real uAD = 0.
+    /** 成长法强 */
+    protected real uAP = 0.
+    /** 成长防御 */
+    protected real uAR = 0.
+    /** 成长魔抗 */
+    protected real uMR = 0.
+    /** 成长生命 */
+    protected real uHP = 0.
+    /** 成长魔法 */
+    protected real uMP = 0.
+    /** 成长攻速 */
+    protected real uAS = 0.
+    /** 成长移速 */
+    protected real uMS = 0.
+    /** 成长回血 */
+    protected real uRH = 0.
+    /** 成长回蓝 */
+    protected real uRM = 0.
+
+    /** 当前攻击 */
+    protected real cAD
+    /** 当前法强 */
+    protected real cAP
+    /** 当前防御 */
+    protected real cAR
+    /** 当前魔抗 */
+    protected real cMR
+    /** 当前生命 */
+    protected real cHP
+    /** 当前魔法 */
+    protected real cMP
+    /** 当前生命最大值 */
+    protected real cHPMax
+    /** 当前魔法最大值 */
+    protected real cMPMax
+    /** 当前攻速 */
+    protected real cAS
+    /** 当前移速 */
+    protected real cMS
+    /** 当前回血 */
+    protected real cRH
+    /** 当前回蓝 */
+    protected real cRM
+    /** 当前攻击范围 */
+    protected real cAttackRange
+    /** 当前是否近战 */
+    protected bool cIsMelee
+    /** 当前模型路径 */
+    protected string cUnitModelPath
+
+    /** 当前绑定单位 */
+    private unit cUnit
+
+    /** 初始化当前状态 */
+    protected function initState()
+        cAD = sAD
+        cAP = sAP
+        cMR = sMR
+        cHP = sHP
+        cMP = sMP
+        cHPMax = sHP
+        cMPMax = sMP
+        cAttackRange = sAttackRange
+        cIsMelee = sIsMelee
+        cUnitModelPath = sUnitModelPath
+
+    /** 获取单位ID */
+    function getUnitId() returns int
+        return unitId
+
+    /** 获取绑定单位 */
+    function getUnit() returns unit
+        return cUnit
+
+
+
+
+/** 生成单位 */
+public function compileGenerateUnit(int unitId) returns UnitDefinition
+    UnitDefinition u = new UnitDefinition(unitId, 'hfoo')
+
+    u.setNormalAbilities("")
+    u.setCollisionSize(20.)
+    u.setDeathTimeseconds(2.)
+    u.setAnimationCastPoint(0.)
+    u.setAnimationCastBackswing(0.)
+    u.setTurnRate(3)
+    u.setArmorType(ArmorType.Divine)
+    u.setAcquisitionRange(600.)
+    u.setDefenseBase(100)
+    u.setArmorSoundType(ArmorSoundType.Flesh)
+    u.setAttack1AnimationDamagePoint(0.)
+    u.setAttack1AnimationBackswingPoint(0.)
+    u.setAttack1WeaponSound(WeaponSound.Nothing)
+    u.setAttack1AttackType(AttackType.Normal)
+    u.setAttack1DamageBase(1)
+    u.setAttack1DamageSidesperDie(1)
+    u.setAttack1DamageNumberofDice(1)
+    u.setAttack1RangeMotionBuffer(300)
+    u.setHitPointsMaximumBase(100)
+    u.setHitPointsRegenerationRate(0)
+    u.setManaMaximum(0)
+    u.setManaRegeneration(0)
+    u.setSightRadiusDay(1200)
+    u.setSightRadiusNight(1200)
+    u.setCanFlee(false)
+
+    return u

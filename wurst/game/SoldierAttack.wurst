@@ -1,0 +1,27 @@
+package SoldierAttack
+import TimerUtils
+import Define
+import MeleeSoldier
+
+public class SoldierSystem
+    constant refreshTimeInterval = 5.
+    timer refreshTimer
+
+    construct()
+        refreshTimer = getTimer()
+        refreshTimer.startPeriodic(refreshTimeInterval) ->
+            unit u
+            u = CreateUnit(PLAYER_LEFT_ARMY, MeleeSoldier.unitId, LOC_LEFT_CRYSTAL.x, LOC_LEFT_CRYSTAL.y, 45.)
+            u.issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+            u = CreateUnit(PLAYER_LEFT_ARMY, MeleeSoldier.unitId, LOC_LEFT_CRYSTAL.x, LOC_LEFT_CRYSTAL.y, 45.)
+            u.issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+            u = CreateUnit(PLAYER_LEFT_ARMY, MeleeSoldier.unitId, LOC_LEFT_CRYSTAL.x, LOC_LEFT_CRYSTAL.y, 45.)
+            u.issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+            u = CreateUnit(PLAYER_RIGHT_ARMY, MeleeSoldier.unitId, LOC_RIGHT_CRYSTAL.x, LOC_RIGHT_CRYSTAL.y, 225.)
+            u.issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+            u = CreateUnit(PLAYER_RIGHT_ARMY, MeleeSoldier.unitId, LOC_RIGHT_CRYSTAL.x, LOC_RIGHT_CRYSTAL.y, 225.)
+            u.issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+            u = CreateUnit(PLAYER_RIGHT_ARMY, MeleeSoldier.unitId, LOC_RIGHT_CRYSTAL.x, LOC_RIGHT_CRYSTAL.y, 225.)
+            u.issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+
+        

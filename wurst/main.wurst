@@ -1,0 +1,6 @@
+package main
+
+import SoldierAttack
+
+init
+    new SoldierSystem()

@@ -1,0 +1,39 @@
+package MeleeSoldier
+import UnitObjEditing
+import UnitBase
+
+public class MeleeSoldier extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'u001'
+
+    construct()
+        sAD = 12
+        sAP = 0
+        sAR = 2
+        sMR = 1
+        sHP = 445
+        sMP = 0
+        sAS = 1
+        sMS = 300
+        sRH = 0
+        sRM = 0
+        sAttackRange = 50
+        sIsMelee = true
+        sUnitModelPath = "wvs-zergling-model.mdl"
+        initState()
+
+
+@compiletime function create()
+    UnitDefinition u = compileGenerateUnit('u001')
+    u.setModelFile("wvs-zergling-model.mdl")
+    u.setSpeedBase(300)
+    u.setAttack1CooldownTime(1.)
+    u.setAttack1Range(50)
+    u.setShadowImageCenterX(16)
+    u.setShadowImageCenterY(16)
+    u.setShadowImageWidth(50)
+    u.setShadowImageHeight(50)
+    u.setSelectionScale(0.8)
+    u.setAnimationWalkSpeed(150)
+    u.setAnimationRunSpeed(150)
+

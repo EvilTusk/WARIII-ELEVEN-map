@@ -22,7 +22,6 @@ class StatusBarStruct
 
     function show()
         let gameUI = Frame.getGetGameUI()
-        
         hpBar = new Frame("BACKDROP", "HpBar", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
         mpBar = new Frame("BACKDROP", "MpBar", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
         hpText = new Frame("TEXT", "HpText", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Text
@@ -137,11 +136,11 @@ class StatusBarStruct
         DzFrameSetSize(mpBar, (I2R(heroMp)/I2R(heroMaxMp)) * 0.24, 0.015)*/
 
 init
-    StatusBarStruct bar = new StatusBarStruct()
+    /*StatusBarStruct bar = new StatusBarStruct()
     SetTimeOfDayScale(0)
     SetTimeOfDay(0.)
     Frame.hideInterface()
     Frame.editBlackBorders(0, 0)
     destroy Frame.getMinimap()..show(true)
-    bar.show()
+    bar.show()*/
 

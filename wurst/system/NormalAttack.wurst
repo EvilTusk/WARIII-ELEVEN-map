@@ -1,0 +1,23 @@
+package NormalAttack
+
+region normalAttackAssistRegion
+trigger normalAttackAssistTrigger
+trigger normalAttackAssistTriggerII
+
+function onAttacked()
+    let u = GetTriggerUnit()
+    let s = GetEventDamageSource()
+    print("被攻击者：" + u.getHandleId().toString() + " 伤害来源：" + s.getHandleId().toString())
+
+init
+    normalAttackAssistRegion = CreateRegion()
+    normalAttackAssistRegion.addRect(GetWorldBounds())
+    normalAttackAssistTriggerII = CreateTrigger()
+    normalAttackAssistTriggerII.addAction(function onAttacked)
+    normalAttackAssistTrigger = CreateTrigger()
+    normalAttackAssistTrigger.registerEnterRegion(normalAttackAssistRegion, Condition(()->begin
+        var u = GetFilterUnit()
+        if u.getAbilityLevel('Aloc') <= 0
+            normalAttackAssistTriggerII.registerUnitEvent(u, EVENT_UNIT_DAMAGED)
+        return false
+    end))
