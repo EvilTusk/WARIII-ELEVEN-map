@@ -1,0 +1,27 @@
+package TriggerUtil
+import HashMap
+
+HashMap<int, int> triggerUtilHashMap = new HashMap<int, int>
+
+/** 设置触发器自带数据 */
+public function trigger.setData(int data)
+    triggerUtilHashMap.put(this.getHandleId(), data)
+
+/** 获取触发器自带数据 */
+public function trigger.getData() returns int
+    let key = this.getHandleId()
+    if triggerUtilHashMap.has(key)
+        return triggerUtilHashMap.get(key)
+    else
+        return 0
+
+/** 清除触发器自带数据 */
+public function trigger.clearData()
+    let key = this.getHandleId()
+    if triggerUtilHashMap.has(key)
+        triggerUtilHashMap.remove(key)
+
+/** 释放触发器 */
+public function trigger.release()
+    this.clearData()
+    DestroyTrigger(this)

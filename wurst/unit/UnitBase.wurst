@@ -1,9 +1,9 @@
 package UnitBase
 import UnitObjEditing
 import HashMap
+import TriggerUtil
 
 HashMap<int, UnitBase> unitBaseMap = new HashMap<int, UnitBase>()
-
 
 public function unit.getUnitBase() returns UnitBase
     let key = this.getHandleId()
@@ -12,10 +12,21 @@ public function unit.getUnitBase() returns UnitBase
     else
         return null
 
+function unit.setUnitBase(UnitBase value)
+    let key = this.getHandleId()
+    unitBaseMap.put(key, value)
+
+function unit.clearUnitBase()
+    let key = this.getHandleId()
+    if unitBaseMap.has(key)
+        unitBaseMap.remove(key)
+
+
 
 public abstract class UnitBase
     /** 单位ID */
     static constant int unitId = 'u000'
+    protected int unitID = 'u000'
 
     /** 初始攻击 */
     protected real sAD = 0.
@@ -66,43 +77,47 @@ public abstract class UnitBase
     protected real uRM = 0.
 
     /** 当前攻击 */
-    protected real cAD
+    real cAD
     /** 当前法强 */
-    protected real cAP
+    real cAP
     /** 当前防御 */
-    protected real cAR
+    real cAR
     /** 当前魔抗 */
-    protected real cMR
+    real cMR
     /** 当前生命 */
-    protected real cHP
+    real cHP
     /** 当前魔法 */
-    protected real cMP
+    real cMP
     /** 当前生命最大值 */
-    protected real cHPMax
+    real cHPMax
     /** 当前魔法最大值 */
-    protected real cMPMax
+    real cMPMax
     /** 当前攻速 */
-    protected real cAS
+    real cAS
     /** 当前移速 */
-    protected real cMS
+    real cMS
     /** 当前回血 */
-    protected real cRH
+    real cRH
     /** 当前回蓝 */
-    protected real cRM
+    real cRM
     /** 当前攻击范围 */
-    protected real cAttackRange
+    real cAttackRange
     /** 当前是否近战 */
-    protected bool cIsMelee
+    bool cIsMelee
+
     /** 当前模型路径 */
     protected string cUnitModelPath
 
     /** 当前绑定单位 */
     private unit cUnit
+    /** 辅助删除触发器 */
+    private trigger assistTrigger
 
     /** 初始化当前状态 */
     protected function initState()
         cAD = sAD
         cAP = sAP
+        cAR = sMR
         cMR = sMR
         cHP = sHP
         cMP = sMP
@@ -119,6 +134,50 @@ public abstract class UnitBase
     /** 获取绑定单位 */
     function getUnit() returns unit
         return cUnit
+
+    /** 创建单位 */
+    function create(player p, real x, real y, real face) returns unit
+        cUnit = CreateUnit(p, unitID, x, y, face)
+        cUnit.setUnitBase(this)
+        assistTrigger = CreateTrigger()
+        assistTrigger.registerUnitEvent(cUnit, EVENT_UNIT_DEATH)
+        assistTrigger.setData(this castTo int)
+        assistTrigger.addCondition(Condition(() -> begin
+            let ct = GetTriggeringTrigger()
+            let v = ct.getData() castTo UnitBase
+            if v castTo int != 0
+                ct.clearData()
+                v.getUnit().clearUnitBase()
+                ct.release()
+                destroy v
+        end))
+        return cUnit
+
+    /** 获取所有者 */
+    function getOwner() returns player
+        if (cUnit != null)
+            return cUnit.getOwner()
+        else
+            return null
+    
+    /** 减少当前血量 */
+    function setHPDecrease(real hp)
+        if (cUnit == null)
+            return
+        cHP -= hp
+        if (cHP <= 0)
+            cUnit.kill()
+        else
+            cUnit.setHP(cHP/cHPMax * 100)
+
+    /** 增加当前血量 */
+    function setHPIncrease(real hp)
+        if (cUnit == null)
+            return
+        cHP += hp
+        if (cHP > cHPMax)
+            cHP = cHPMax
+        cUnit.setHP(cHP/cHPMax * 100)
 
 
 

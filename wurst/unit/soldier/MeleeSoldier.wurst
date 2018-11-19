@@ -7,14 +7,15 @@ public class MeleeSoldier extends UnitBase
     static constant int unitId = 'u001'
 
     construct()
+        unitID = 'u001'
         sAD = 12
         sAP = 0
-        sAR = 2
-        sMR = 1
+        sAR = 0
+        sMR = 0
         sHP = 445
         sMP = 0
-        sAS = 1
-        sMS = 300
+        sAS = 1.25
+        sMS = 325
         sRH = 0
         sRM = 0
         sAttackRange = 50
@@ -27,7 +28,7 @@ public class MeleeSoldier extends UnitBase
     UnitDefinition u = compileGenerateUnit('u001')
     u.setModelFile("wvs-zergling-model.mdl")
     u.setSpeedBase(300)
-    u.setAttack1CooldownTime(1.)
+    u.setAttack1CooldownTime(0.8)
     u.setAttack1Range(50)
     u.setShadowImageCenterX(16)
     u.setShadowImageCenterY(16)

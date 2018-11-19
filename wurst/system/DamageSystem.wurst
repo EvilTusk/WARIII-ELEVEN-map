@@ -1,2 +1,11 @@
 package DamageSystem
+import UnitBase
+
+/** 造成物理伤害 src伤害来源， dst被伤害角色， mul伤害倍数 */
+public function adDamageToObj(UnitBase src, UnitBase dst, real mul)
+    let atk = src.cAD
+    let def = dst.cAR
+    
+    let damagePoint = atk * mul * (100./100.+def)
+    dst.setHPDecrease(damagePoint)
 
