@@ -2,6 +2,7 @@ package SoldierAttack
 import TimerUtils
 import Define
 import MeleeSoldier
+import RangeSoldier
 
 public class SoldierSystem
     constant refreshTimeInterval = 5.
@@ -10,18 +11,23 @@ public class SoldierSystem
     construct()
         refreshTimer = getTimer()
         refreshTimer.startPeriodic(refreshTimeInterval) ->
-            new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL.x, LOC_LEFT_CRYSTAL.y, 45.)
+            var pos = angle(0.25*PI)
+            new BlueMeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
             .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-            new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL.x, LOC_LEFT_CRYSTAL.y, 45.)
+            new BlueMeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
             .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-            new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL.x, LOC_LEFT_CRYSTAL.y, 45.)
+            new BlueMeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
             .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-
-            new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL.x, LOC_RIGHT_CRYSTAL.y, 225.)
+            new BlueRangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+            .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+            pos = angle(1.25*PI)
+            new RedMeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
             .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-            new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL.x, LOC_RIGHT_CRYSTAL.y, 225.)
+            new RedMeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
             .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-            new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL.x, LOC_RIGHT_CRYSTAL.y, 225.)
+            new RedMeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+            .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+            new RedRangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
             .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
 
         

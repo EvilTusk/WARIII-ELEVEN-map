@@ -1,11 +1,39 @@
 package DamageSystem
 import UnitBase
 
-/** 造成物理伤害 src伤害来源， dst被伤害角色， mul伤害倍数 */
-public function adDamageToObj(UnitBase src, UnitBase dst, real mul)
-    let atk = src.cAD
-    let def = dst.cAR
-    
-    let damagePoint = atk * mul * (100./100.+def)
-    dst.setHPDecrease(damagePoint)
 
+public class DamageEvent
+    /** 伤害来源 */
+    private UnitBase srcUnit
+    /** 伤害单位 */
+    private UnitBase dstUnit
+    /** 基础物理伤害 */
+    private real adSta = 0.
+    /** 基础魔法伤害 */
+    private real apSta = 0.
+    /** 物理伤害倍数 */
+    private real adMul = 0.
+    /** 魔法伤害倍数 */
+    private real apMul = 0.
+    /** 是否普通攻击 */
+    private bool isAttack = false
+
+    /** 普通攻击 */
+    construct(UnitBase srcUnit, UnitBase dstUnit)
+        this.srcUnit = srcUnit
+        this.dstUnit = dstUnit
+        adMul = 1.
+        isAttack = true
+
+    /** 开始伤害计算 */
+    function run()
+        let adDamage = (adSta + srcUnit.cAD*adMul) * (100./100.+srcUnit.cAR)
+        let apDamage = (apSta + srcUnit.cAP*apMul) * (100./100.+srcUnit.cMR)
+        
+        dstUnit.setHPDecrease(adDamage + apDamage)
+
+    /** 对此次伤害事件加成 */
+    function increaseDamage()
+
+    /** 对此次伤害事件削减 */
+    function decreaseDamage()

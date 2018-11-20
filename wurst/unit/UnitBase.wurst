@@ -136,8 +136,8 @@ public abstract class UnitBase
         return cUnit
 
     /** 创建单位 */
-    function create(player p, real x, real y, real face) returns unit
-        cUnit = CreateUnit(p, unitID, x, y, face)
+    function create(player p, vec2 pos, angle face) returns unit
+        cUnit = createUnit(p, unitID, pos, face)
         cUnit.setUnitBase(this)
         assistTrigger = CreateTrigger()
         assistTrigger.registerUnitEvent(cUnit, EVENT_UNIT_DEATH)

@@ -1,0 +1,81 @@
+package RangeSoldier
+import UnitObjEditing
+import UnitBase
+
+public class BlueRangeSoldier extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'u003'
+
+    construct()
+        unitID = 'u003'
+        sAD = 25
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 280
+        sMP = 0
+        sAS = 0.67
+        sMS = 325
+        sRH = 0
+        sRM = 0
+        sAttackRange = 450
+        sIsMelee = true
+        sUnitModelPath = "BlueWizard.mdl"
+        initState()
+
+        
+public class RedRangeSoldier extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'u004'
+
+    construct()
+        unitID = 'u004'
+        sAD = 25
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 280
+        sMP = 0
+        sAS = 0.67
+        sMS = 325
+        sRH = 0
+        sRM = 0
+        sAttackRange = 450
+        sIsMelee = true
+        sUnitModelPath = "RedWizard.mdl"
+        initState()
+
+
+@compiletime function create1()
+    UnitDefinition u = compileGenerateUnit('u003')
+    u.setModelFile("BlueWizard.mdl")
+    u.setSpeedBase(325)
+    u.setAttack1CooldownTime(1.6)
+    u.setAttack1Range(450)
+    u.setShadowImageCenterX(14)
+    u.setShadowImageCenterY(14)
+    u.setShadowImageWidth(60)
+    u.setShadowImageHeight(60)
+    u.setSelectionScale(.8)
+    u.setScalingValue(1.)
+    u.setScaleProjectiles(true)
+    u.setAnimationWalkSpeed(200)
+    u.setAnimationRunSpeed(200)
+
+@compiletime function create2()
+    UnitDefinition u = compileGenerateUnit('u004')
+    u.setModelFile("RedWizard.mdl")
+    u.setSpeedBase(325)
+    u.setAttack1CooldownTime(1.6)
+    u.setAttack1Range(450)
+    u.setShadowImageCenterX(14)
+    u.setShadowImageCenterY(14)
+    u.setShadowImageWidth(60)
+    u.setShadowImageHeight(60)
+    u.setSelectionScale(.8)
+    u.setScalingValue(1.)
+    u.setScaleProjectiles(true)
+    u.setAnimationWalkSpeed(200)
+    u.setAnimationRunSpeed(200)
+
+

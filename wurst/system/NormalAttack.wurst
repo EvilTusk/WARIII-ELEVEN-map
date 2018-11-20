@@ -9,7 +9,7 @@ function onAttacked()
     let ub = u.getUnitBase()
     let sb = s.getUnitBase()
     if (sb.cIsMelee)
-        adDamageToObj(sb, ub, 1.)
+        destroy new DamageEvent(sb, ub)..run()
 
 init
     enableDamageDetect()
