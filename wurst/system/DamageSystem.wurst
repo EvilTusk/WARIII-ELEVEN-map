@@ -1,8 +1,14 @@
 package DamageSystem
 import UnitBase
 
+/** 伤害来源（技能或普攻） */
+public enum DamageSource
+    NormalAttack
+
 
 public class DamageEvent
+    /** 伤害来源（技能或普攻） */
+    private DamageSource damageSource
     /** 伤害来源 */
     private UnitBase srcUnit
     /** 伤害单位 */
@@ -24,6 +30,7 @@ public class DamageEvent
         this.dstUnit = dstUnit
         adMul = 1.
         isAttack = true
+        damageSource = DamageSource.NormalAttack
 
     /** 开始伤害计算 */
     function run()

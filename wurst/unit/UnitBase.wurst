@@ -2,6 +2,8 @@ package UnitBase
 import UnitObjEditing
 import HashMap
 import TriggerUtil
+import initlater DamageSystem
+import initlater Projectiles
 
 HashMap<int, UnitBase> unitBaseMap = new HashMap<int, UnitBase>()
 
@@ -29,31 +31,33 @@ public abstract class UnitBase
     protected int unitID = 'u000'
 
     /** 初始攻击 */
-    protected real sAD = 0.
+    protected int sAD = 0
     /** 初始法强 */
-    protected real sAP = 0.
+    protected int sAP = 0
     /** 初始防御 */
-    protected real sAR = 0.
+    protected int sAR = 0
     /** 初始魔抗 */
-    protected real sMR = 0.
+    protected int sMR = 0
     /** 初始生命 */
-    protected real sHP = 0.
+    protected int sHP = 0
     /** 初始魔法 */
-    protected real sMP = 0.
+    protected int sMP = 0
     /** 初始攻速 */
-    protected real sAS = 0.
+    protected real sAS = 0
     /** 初始移速 */
-    protected real sMS = 0.
+    protected real sMS = 0
     /** 初始回血 */
-    protected real sRH = 0.
+    protected real sRH = 0
     /** 初始回蓝 */
-    protected real sRM = 0.
+    protected real sRM = 0
     /** 初始攻击范围 */
-    protected real sAttackRange = 0.
+    protected int sAttackRange = 0
     /** 初始是否近战 */
     protected bool sIsMelee = false
     /** 初始模型路径 */
     protected string sUnitModelPath = ""
+    /** 初始普通攻击飞行道具 */
+    protected Projectiles sUnitAttackProjectiles
 
     /** 成长攻击 */
     protected real uAD = 0.
@@ -107,6 +111,8 @@ public abstract class UnitBase
 
     /** 当前模型路径 */
     protected string cUnitModelPath
+    /** 当前普通攻击飞行道具 */
+    protected Projectiles cUnitAttackProjectiles
 
     /** 当前绑定单位 */
     private unit cUnit
@@ -115,17 +121,23 @@ public abstract class UnitBase
 
     /** 初始化当前状态 */
     protected function initState()
-        cAD = sAD
-        cAP = sAP
-        cAR = sMR
-        cMR = sMR
-        cHP = sHP
-        cMP = sMP
-        cHPMax = sHP
-        cMPMax = sMP
-        cAttackRange = sAttackRange
+        cAD = sAD.toReal()
+        cAP = sAP.toReal()
+        cAR = sMR.toReal()
+        cMR = sMR.toReal()
+        cHP = sHP.toReal()
+        cMP = sMP.toReal()
+        cHPMax = sHP.toReal()
+        cMPMax = sMP.toReal()
+        cAS = sAS
+        cMS = sMS
+        cRH = sRH
+        cRM = sRM
+
+        cAttackRange = sAttackRange.toReal()
         cIsMelee = sIsMelee
         cUnitModelPath = sUnitModelPath
+        cUnitAttackProjectiles = sUnitAttackProjectiles
 
     /** 获取单位ID */
     function getUnitId() returns int
@@ -178,6 +190,13 @@ public abstract class UnitBase
         if (cHP > cHPMax)
             cHP = cHPMax
         cUnit.setHP(cHP/cHPMax * 100)
+
+    /** 发动普通攻击 */
+    function runNormalAttack(UnitBase objUnit)
+        if cIsMelee
+            destroy new DamageEvent(this, objUnit)..run()
+        else
+            cUnitAttackProjectiles.run(this.getUnit().getPos(), objUnit)
 
 
 

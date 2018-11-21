@@ -2,7 +2,7 @@ package MeleeSoldier
 import UnitObjEditing
 import UnitBase
 
-public class BlueMeleeSoldier extends UnitBase
+public class MeleeSoldier extends UnitBase
     /** 单位ID */
     static constant int unitId = 'u001'
 
@@ -20,34 +20,13 @@ public class BlueMeleeSoldier extends UnitBase
         sRM = 0
         sAttackRange = 50
         sIsMelee = true
-        sUnitModelPath = "BlueWarrior.mdl"
-        initState()
-
-public class RedMeleeSoldier extends UnitBase
-    /** 单位ID */
-    static constant int unitId = 'u002'
-
-    construct()
-        unitID = 'u002'
-        sAD = 12
-        sAP = 0
-        sAR = 0
-        sMR = 0
-        sHP = 445
-        sMP = 0
-        sAS = 1.25
-        sMS = 325
-        sRH = 0
-        sRM = 0
-        sAttackRange = 50
-        sIsMelee = true
-        sUnitModelPath = "RedWarrior.mdl"
+        sUnitModelPath = "wvs-zergling-model.mdl"
         initState()
 
 
-@compiletime function create1()
+@compiletime function create()
     UnitDefinition u = compileGenerateUnit('u001')
-    u.setModelFile("BlueWarrior.mdl")
+    u.setModelFile("wvs-zergling-model.mdl")
     u.setSpeedBase(325)
     u.setAttack1CooldownTime(.8)
     u.setAttack1Range(50)
@@ -58,22 +37,6 @@ public class RedMeleeSoldier extends UnitBase
     u.setSelectionScale(.8)
     u.setScalingValue(1.)
     u.setScaleProjectiles(true)
-    u.setAnimationWalkSpeed(200)
-    u.setAnimationRunSpeed(200)
-
-@compiletime function create2()
-    UnitDefinition u = compileGenerateUnit('u002')
-    u.setModelFile("RedWarrior.mdl")
-    u.setSpeedBase(325)
-    u.setAttack1CooldownTime(.8)
-    u.setAttack1Range(50)
-    u.setShadowImageCenterX(16)
-    u.setShadowImageCenterY(16)
-    u.setShadowImageWidth(50)
-    u.setShadowImageHeight(50)
-    u.setSelectionScale(.8)
-    u.setScalingValue(1.)
-    u.setScaleProjectiles(true)
-    u.setAnimationWalkSpeed(200)
-    u.setAnimationRunSpeed(200)
+    u.setAnimationWalkSpeed(100)
+    u.setAnimationRunSpeed(100)
 

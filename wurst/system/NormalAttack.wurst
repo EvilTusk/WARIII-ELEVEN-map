@@ -1,15 +1,14 @@
 package NormalAttack
 import DamageDetection
 import UnitBase
-import DamageSystem
 
 function onAttacked()
     let u = GetTriggerUnit()
     let s = GetEventDamageSource()
     let ub = u.getUnitBase()
     let sb = s.getUnitBase()
-    if (sb.cIsMelee)
-        destroy new DamageEvent(sb, ub)..run()
+    sb.runNormalAttack(ub)
+        
 
 init
     enableDamageDetect()

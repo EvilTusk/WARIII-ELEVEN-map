@@ -5,29 +5,40 @@ import MeleeSoldier
 import RangeSoldier
 
 public class SoldierSystem
-    constant refreshTimeInterval = 5.
+    constant refreshTimeInterval = 20.
     timer refreshTimer
 
     construct()
+        sommonSoldier()
         refreshTimer = getTimer()
-        refreshTimer.startPeriodic(refreshTimeInterval) ->
-            var pos = angle(0.25*PI)
-            new BlueMeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-            new BlueMeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-            new BlueMeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-            new BlueRangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-            pos = angle(1.25*PI)
-            new RedMeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-            new RedMeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-            new RedMeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-            new RedRangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-            .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+        refreshTimer.startPeriodic(refreshTimeInterval, function sommonSoldier)
+
+    static function sommonSoldier()
+        var pos = angle(0.25*PI)
+        new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+        new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+        new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+        new RangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+        new RangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+        new RangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
+        pos = angle(1.25*PI)
+        new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+        new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+        new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+        new RangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+        new RangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+        new RangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
+        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
 
         
