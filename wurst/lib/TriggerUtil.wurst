@@ -23,5 +23,4 @@ public function trigger.clearData()
 
 /** 释放触发器 */
 public function trigger.release()
-    this.clearData()
-    DestroyTrigger(this)
+    this..clearData().destr()

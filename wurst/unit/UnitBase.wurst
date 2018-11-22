@@ -119,6 +119,9 @@ public abstract class UnitBase
     /** 辅助删除触发器 */
     private trigger assistTrigger
 
+    /** 远程攻击触发器 */
+    private trigger rangeAttackTrigger
+
     /** 初始化当前状态 */
     protected function initState()
         cAD = sAD.toReal()
@@ -139,6 +142,16 @@ public abstract class UnitBase
         cUnitModelPath = sUnitModelPath
         cUnitAttackProjectiles = sUnitAttackProjectiles
 
+        if not cIsMelee
+            rangeAttackTrigger = CreateTrigger()
+            ..addCondition(Condition(function rangeAttackCallback))
+            cUnitAttackProjectiles.setDeathCallback(rangeAttackTrigger)
+
+    /** 远程攻击回调 */
+    private static function rangeAttackCallback()
+        destroy GetTriggeringTrigger().getData() castTo DamageEvent..run()
+        
+
     /** 获取单位ID */
     function getUnitId() returns int
         return unitId
@@ -150,17 +163,18 @@ public abstract class UnitBase
     /** 创建单位 */
     function create(player p, vec2 pos, angle face) returns unit
         cUnit = createUnit(p, unitID, pos, face)
-        cUnit.setUnitBase(this)
+        ..setUnitBase(this)
         assistTrigger = CreateTrigger()
-        assistTrigger.registerUnitEvent(cUnit, EVENT_UNIT_DEATH)
-        assistTrigger.setData(this castTo int)
-        assistTrigger.addCondition(Condition(() -> begin
+        ..registerUnitEvent(cUnit, EVENT_UNIT_DEATH)
+        ..setData(this castTo int)
+        ..addCondition(Condition(() -> begin
             let ct = GetTriggeringTrigger()
             let v = ct.getData() castTo UnitBase
             if v castTo int != 0
                 ct.clearData()
                 v.getUnit().clearUnitBase()
                 ct.release()
+                v.rangeAttackTrigger.release()
                 destroy v
         end))
         return cUnit
@@ -196,7 +210,7 @@ public abstract class UnitBase
         if cIsMelee
             destroy new DamageEvent(this, objUnit)..run()
         else
-            cUnitAttackProjectiles.run(this.getUnit().getPos(), objUnit)
+            cUnitAttackProjectiles.run(this.getUnit().getPos(), objUnit, new DamageEvent(this, objUnit) castTo int)
 
 
 

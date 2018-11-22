@@ -25,7 +25,7 @@ public class RangeSoldier extends UnitBase
         sUnitAttackProjectiles = new Projectiles(this, "Cannonball.mdl")
         sUnitAttackProjectiles.originHeight = 40
         sUnitAttackProjectiles.originSpeed = 250
-        sUnitAttackProjectiles.modelScale = .5
+        sUnitAttackProjectiles.modelScale = .4
         initState()
 
 

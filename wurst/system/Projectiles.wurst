@@ -43,41 +43,41 @@ public class Projectiles
     /** 目标点暂存器 */
     private HashMap<int, real> objPosMapX = new HashMap<int, real>()
     private HashMap<int, real> objPosMapY = new HashMap<int, real>()
+    /** 回调暂存器 */
+    private HashMap<int, int> callbackDataMap = new HashMap<int, int>()
 
     /** 默认普通攻击 */
     construct(UnitBase owner, string modelPath)
         this.owner = owner
         this.modelPath = modelPath
         this.isTarget = true
-        this.judgmentRange = 50
+        this.judgmentRange = 20
         this.modelScale = 1.
 
     /** 飞行道具死亡回调 */
-    function setDeathCallback(code callbackFunc)
-        if onDeathCallbackTrigger != null
-            onDeathCallbackTrigger..clearData().release()
-        
-        onDeathCallbackTrigger = CreateTrigger()
-        onDeathCallbackTrigger.addCondition(Condition(callbackFunc))
-        onDeathCallbackTrigger.setData(owner castTo int)
+    function setDeathCallback(trigger callbackTrigger)
+        onDeathCallbackTrigger = callbackTrigger
 
     /** 运行飞行道具(指向) */
-    function run(vec2 pos, UnitBase target)
+    function run(vec2 pos, UnitBase target, int callbackData)
         let fx = new Fx(vec3(pos.x, pos.y, originHeight.toReal()), pos.angleTo(target.getUnit().getPos()), modelPath)
         ..setPlayerColor(owner.getOwner().getColor())
         ..setScale(modelScale)
 
         let t = getTimer()
+        let key = t.getHandleId()
 
-        fxMap.put(t.getHandleId(), fx)
-        targetMap.put(t.getHandleId(), target.getUnit())
+        fxMap.put(key, fx)
+        targetMap.put(key, target.getUnit())
+        callbackDataMap.put(key, callbackData)
 
         t..setData(this castTo int)
         .startPeriodic(0.02) ->
             let _t = GetExpiredTimer()
             let _v = _t.getData() castTo thistype
-            let _fx = _v.fxMap.get(_t.getHandleId())
-            let _target = _v.targetMap.get(_t.getHandleId())
+            let _key = _t.getHandleId()
+            let _fx = _v.fxMap.get(_key)
+            let _target = _v.targetMap.get(_key)
 
             if _target.isAlive()
                 let objPos = _target.getPos()
@@ -89,23 +89,24 @@ public class Projectiles
 
                 let afterPos = _fx.getPos2()
                 if afterPos.distanceTo(objPos) < _v.judgmentRange.toReal()
-                    _v.fxMap.remove(_t.getHandleId())
-                    _v.targetMap.remove(_t.getHandleId())
+                    _v.fxMap.remove(_key)
+                    _v.targetMap.remove(_key)
                     _t.destr()
                     destroy _fx
                     if (_v.onDeathCallbackTrigger != null)
-                        _v.onDeathCallbackTrigger.evaluate()
+                        _v.onDeathCallbackTrigger..setData(_v.callbackDataMap.getAndRemove(_key)).evaluate()
                     
             else
-                _v.targetMap.remove(_t.getHandleId())
-                _v.objPosMapX.put(_t.getHandleId(), _target.getX())
-                _v.objPosMapY.put(_t.getHandleId(), _target.getY())
+                _v.targetMap.remove(_key)
+                _v.objPosMapX.put(_key, _target.getX())
+                _v.objPosMapY.put(_key, _target.getY())
                 _t..pause()
                 _t.startPeriodic(0.02) ->
                     let __t = GetExpiredTimer()
                     let __v = __t.getData() castTo thistype
-                    let __fx = __v.fxMap.get(__t.getHandleId())
-                    let objPos = vec2(__v.objPosMapX.get(__t.getHandleId()), __v.objPosMapY.get(__t.getHandleId()))
+                    let __key = __t.getHandleId()
+                    let __fx = __v.fxMap.get(__key)
+                    let objPos = vec2(__v.objPosMapX.get(__key), __v.objPosMapY.get(__key))
                     let curPos = __fx.getPos2()
                     .moveTowards(objPos, __v.originSpeed.toReal()*0.02)
                     __fx..setXYAngle(curPos.angleTo(objPos))
@@ -113,12 +114,12 @@ public class Projectiles
 
                     let afterPos = __fx.getPos2()
                     if afterPos.distanceTo(objPos) < __v.judgmentRange.toReal()
-                        __v.fxMap.remove(__t.getHandleId())
-                        __v.objPosMapX.remove(__t.getHandleId())
-                        __v.objPosMapY.remove(__t.getHandleId())
+                        __v.fxMap.remove(__key)
+                        __v.objPosMapX.remove(__key)
+                        __v.objPosMapY.remove(__key)
                         __t.destr()
                         destroy __fx
                         if (__v.onDeathCallbackTrigger != null)
-                            __v.onDeathCallbackTrigger.evaluate()
+                            __v.callbackDataMap.remove(__key)
     
     
