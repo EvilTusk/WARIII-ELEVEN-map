@@ -3,7 +3,7 @@ package Define
 public constant player PLAYER_LEFT_ARMY     = Player(10)
 public constant player PLAYER_RIGHT_ARMY    = Player(11)
 
-public constant vec2 LOC_LEFT_TOWER_I       = vec2(-896.,  -1150.)
+public constant vec2 LOC_LEFT_TOWER_I       = vec2(-896.,  -1200.)
 public constant vec2 LOC_LEFT_TOWER_II      = vec2(-1664., -1920.)
 public constant vec2 LOC_LEFT_CRYSTAL       = vec2(-2176., -2432.)
 public constant vec2 LOC_LEFT_TOWER_G_L     = vec2(-3008., -2880.)
@@ -21,12 +21,14 @@ public constant vec2 LOC_RIGHT_SHOP         = vec2(3072., 3840.)
 public constant vec2 LOC_RIGHT_HEAL         = vec2(3968., 3712.)
 
 init
+    // 设置军队
     SetPlayerTeam(PLAYER_LEFT_ARMY, 0)
     PLAYER_LEFT_ARMY.setState(PLAYER_STATE_ALLIED_VICTORY, 1)
     PLAYER_LEFT_ARMY.setColor(PLAYER_COLOR_BLUE)
     SetPlayerTeam(PLAYER_RIGHT_ARMY, 1)
     PLAYER_RIGHT_ARMY.setState(PLAYER_STATE_ALLIED_VICTORY, 1)
     PLAYER_RIGHT_ARMY.setColor(PLAYER_COLOR_RED)
+    // 设置同盟
     for i=0 to 4
         PLAYER_LEFT_ARMY.setPlayerAlliance(Player(i), ALLIANCE_PASSIVE, true)
         PLAYER_LEFT_ARMY.setPlayerAlliance(Player(i), ALLIANCE_HELP_REQUEST, true)
@@ -57,3 +59,9 @@ init
         ..setPlayerAlliance(PLAYER_RIGHT_ARMY, ALLIANCE_SHARED_SPELLS, true)
         ..setPlayerAlliance(PLAYER_RIGHT_ARMY, ALLIANCE_SHARED_VISION, true)
         ..setColor(PLAYER_COLOR_RED)
+
+    // 初始化视野
+    let r = GetPlayableMapRect()
+    CreateFogModifierRectBJ(true, PLAYER_LEFT_ARMY, FOG_OF_WAR_VISIBLE, r)..start().destr()
+    CreateFogModifierRectBJ(true, PLAYER_RIGHT_ARMY, FOG_OF_WAR_VISIBLE, r)..start().destr()
+    r.remove()

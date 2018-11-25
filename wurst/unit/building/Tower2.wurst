@@ -1,0 +1,45 @@
+package Tower2
+import UnitBase
+import Projectiles
+import UnitObjEditing
+
+
+public class Tower2 extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'b002'
+
+    construct()
+        unitID = 'b002'
+        sAD = 172
+        sAP = 0
+        sAR = 40
+        sMR = 40
+        sHP = 3300
+        sMP = 0
+        sAS = 0.833
+        sMS = 0
+        sRH = 0
+        sRM = 0
+        sAttackRange = 800
+        sIsMelee = false
+        sUnitModelPath = "AmethystTower.mdl"
+        sUnitAttackProjectiles = new Projectiles(this, "OrbOfLightning.mdl")
+        sUnitAttackProjectiles.originHeight = 280
+        sUnitAttackProjectiles.originSpeed = 500
+        sUnitAttackProjectiles.modelScale = .4
+        initState()
+    
+
+@compiletime function create()
+    BuildingDefinition u = compileGenerateUnit('b002') castTo BuildingDefinition
+    u.setIsaBuilding(true)
+    u.setCollisionSize(80.)
+    u.setPathingMap("PathTextures\\4x4SimpleSolid.tga")
+    u.setModelFile("AmethystTower.mdl")
+    u.setSpeedBase(0)
+    u.setAttacksEnabled(1)
+    u.setAttack1CooldownTime(1.2)
+    u.setAttack1Range(800)
+    u.setSelectionScale(1.)
+    u.setScalingValue(1.)
+    u.setScaleProjectiles(true)

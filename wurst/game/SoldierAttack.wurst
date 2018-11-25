@@ -3,42 +3,95 @@ import TimerUtils
 import Define
 import MeleeSoldier
 import RangeSoldier
+import CannonSoldier
+import SuperSoldier
 
 public class SoldierSystem
-    constant refreshTimeInterval = 20.
-    timer refreshTimer
+    static thistype instance
+    private constant refreshTimeInterval = 20.
+    private timer refreshTimer
+    private int unitCountLeft = 6
+    private int unitCountRight = 6
+    /** 超级士兵计数 */
+    int superUnitCountLeft = 0
+    /** 超级士兵计数 */
+    int superUnitCountRight = 0
+    /** 是否有超级士兵 */
+    bool leftHasSuperSoldier = false
+    /** 是否有超级士兵 */
+    bool rightHasSuperSoldier = false
+    /** 炮兵间隔 */
+    private int cannonUnitCD = 3
+    /** 当前小兵等级 */
+    private int unitLV = 1
 
     construct()
+        instance = this
         sommonSoldier()
         refreshTimer = getTimer()
+        refreshTimer.setData(this castTo int)
         refreshTimer.startPeriodic(refreshTimeInterval, function sommonSoldier)
 
-    static function sommonSoldier()
-        var pos = angle(0.25*PI)
-        new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-        new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-        new MeleeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-        new RangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-        new RangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-        new RangeSoldier().create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_RIGHT_CRYSTAL)
-        pos = angle(1.25*PI)
-        new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-        new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-        new MeleeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-        new RangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-        new RangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
-        new RangeSoldier().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, pos)
-        .issuePointOrder("attack", LOC_LEFT_CRYSTAL)
+    ondestroy
+        refreshTimer.release()
 
+    private static function sommonSoldier()
+        let t = getTimer()
+        t.startPeriodic(.60) ->
+            let _t = GetExpiredTimer()
+            let offset = vec2(-160, 160)
+
+            if instance.superUnitCountLeft > 0
+                new SuperSoldier()..setLV(instance.unitLV)
+                .create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL + offset, angle(0.25*PI))
+                .issuePointOrder("attack", LOC_RIGHT_NEXUS)
+                instance.superUnitCountLeft--
+            else if instance.unitCountLeft <= 6 and instance.unitCountLeft > 3
+                new MeleeSoldier()..setLV(instance.unitLV>25 ? 25 : instance.unitLV)
+                .create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL + offset, angle(0.25*PI))
+                .issuePointOrder("attack", LOC_RIGHT_NEXUS)
+                instance.unitCountLeft--
+            else if instance.unitCountLeft > 0
+                new RangeSoldier()..setLV(instance.unitLV>25 ? 25 : instance.unitLV)
+                .create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL + offset, angle(0.25*PI))
+                .issuePointOrder("attack", LOC_RIGHT_NEXUS)
+                instance.unitCountLeft--
+
+            if instance.superUnitCountRight > 0
+                new SuperSoldier()..setLV(instance.unitLV)
+                .create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL + offset, angle(1.25*PI))
+                .issuePointOrder("attack", LOC_LEFT_NEXUS)
+                instance.superUnitCountRight--
+            else if instance.unitCountRight <= 6 and instance.unitCountRight > 3
+                new MeleeSoldier()..setLV(instance.unitLV>25 ? 25 : instance.unitLV)
+                .create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL + offset, angle(1.25*PI))
+                .issuePointOrder("attack", LOC_LEFT_NEXUS)
+                instance.unitCountRight--
+            else if instance.unitCountRight > 0
+                new RangeSoldier()..setLV(instance.unitLV>25 ? 25 : instance.unitLV)
+                .create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL + offset, angle(1.25*PI))
+                .issuePointOrder("attack", LOC_LEFT_NEXUS)
+                instance.unitCountRight--
+
+            if instance.unitCountLeft<=0 and instance.unitCountRight<=0
+                instance.cannonUnitCD-- // 炮兵CD 以及 小兵升级
+                if instance.cannonUnitCD == 0
+                    instance.cannonUnitCD = 5
+                else if instance.cannonUnitCD == 4
+                    new CannonSoldier()..setLV(instance.unitLV)
+                    .create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL + offset, angle(0.25*PI))
+                    .issuePointOrder("attack", LOC_RIGHT_NEXUS)
+                    new CannonSoldier()..setLV(instance.unitLV)
+                    .create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL + offset, angle(1.25*PI))
+                    .issuePointOrder("attack", LOC_LEFT_NEXUS)
+                    // 小兵升级
+                    instance.unitLV++
+                else
+                    instance.unitCountLeft = 6
+                    instance.unitCountRight = 6
+                    if instance.leftHasSuperSoldier and instance.superUnitCountLeft==0
+                        instance.superUnitCountLeft = 1
+                    if instance.rightHasSuperSoldier and instance.superUnitCountRight==0
+                        instance.superUnitCountRight = 1
+                    _t.release()
         

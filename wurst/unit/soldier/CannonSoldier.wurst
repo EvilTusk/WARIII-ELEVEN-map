@@ -1,0 +1,54 @@
+package CannonSoldier
+import UnitObjEditing
+import UnitBase
+import Projectiles
+
+public class CannonSoldier extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'u003'
+
+    construct()
+        unitID = 'u003'
+        sAD = 41
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 912
+        sMP = 0
+        sAS = 1.
+        sMS = 325
+        sRH = 0
+        sRM = 0
+        uAD = 8
+        uHP = 111
+        uAR = 0
+        uMR = 0
+        sAttackRange = 300
+        sIsMelee = false
+        sUnitModelPath = "SC2_Inmortal.mdl"
+        sUnitAttackProjectiles = new Projectiles(this, "Cannonball.mdl")
+        sUnitAttackProjectiles.originHeight = 60
+        sUnitAttackProjectiles.lowestHeight = 60
+        sUnitAttackProjectiles.originSpeed = 400
+        sUnitAttackProjectiles.modelScale = .6
+        initState()
+
+
+@compiletime function create()
+    UnitDefinition u = compileGenerateUnit('u003') castTo UnitDefinition
+    u.setModelFile("SC2_Inmortal.mdl")
+    u.setSpeedBase(325)
+    u.setAttacksEnabled(1)
+    u.setAttack1CooldownTime(1.)
+    u.setAttack1Range(300)
+    u.setShadowImageCenterX(8)
+    u.setShadowImageCenterY(8)
+    u.setShadowImageWidth(80)
+    u.setShadowImageHeight(80)
+    u.setSelectionScale(.8)
+    u.setScalingValue(.6)
+    u.setScaleProjectiles(true)
+    u.setAnimationWalkSpeed(500)
+    u.setAnimationRunSpeed(600)
+
+

@@ -1,0 +1,38 @@
+package Shop
+import UnitBase
+import UnitObjEditing
+
+
+public class Shop extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'b006'
+
+    construct()
+        unitID = 'b006'
+        sAD = 0
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 100000
+        sMP = 0
+        sAS = 0
+        sMS = 0
+        sRH = 0
+        sRM = 0
+        sAttackRange = 0
+        sIsMelee = true
+        sUnitModelPath = "buildings\\human\\ArcaneVault\\ArcaneVault"
+        initState()
+    
+
+@compiletime function create()
+    BuildingDefinition u = compileGenerateUnit('b006') castTo BuildingDefinition
+    u.setIsaBuilding(true)
+    u.setCollisionSize(180.)
+    u.setPathingMap("PathTextures\\4x4SimpleSolid.tga")
+    u.setModelFile("buildings\\human\\ArcaneVault\\ArcaneVault")
+    u.setSpeedBase(0)
+    u.setAttacksEnabled(0)
+    u.setSelectionScale(-1.)
+    u.setScalingValue(1.)
+    u.setScaleProjectiles(true)

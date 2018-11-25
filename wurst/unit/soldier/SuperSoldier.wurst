@@ -1,0 +1,48 @@
+package SuperSoldier
+import UnitObjEditing
+import UnitBase
+
+public class SuperSoldier extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'u004'
+
+    construct()
+        unitID = 'u004'
+        sAD = 230
+        sAP = 0
+        sAR = 100
+        sMR = -30
+        sHP = 1600
+        sMP = 0
+        sAS = 0.694
+        sMS = 325
+        sRH = 0
+        sRM = 0
+        uAD = 10
+        uHP = 120
+        uAR = 0
+        uMR = 0
+        sAttackRange = 170
+        sIsMelee = true
+        sUnitModelPath = "ZergQueen\\wvs-queen-model.mdl"
+        initState()
+
+
+@compiletime function create()
+    UnitDefinition u = compileGenerateUnit('u004') castTo UnitDefinition
+    u.setModelFile("ZergQueen\\wvs-queen-model.mdl")
+    u.setSpeedBase(325)
+    u.setAttacksEnabled(1)
+    u.setAttack1CooldownTime(1.44)
+    u.setAttack1Range(170)
+    u.setShadowImageCenterX(6)
+    u.setShadowImageCenterY(6)
+    u.setShadowImageWidth(120)
+    u.setShadowImageHeight(120)
+    u.setSelectionScale(.8)
+    u.setScalingValue(.8)
+    u.setScaleProjectiles(true)
+    u.setAnimationWalkSpeed(100)
+    u.setAnimationRunSpeed(200)
+
+

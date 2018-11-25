@@ -12,6 +12,8 @@ public class Projectiles
     real modelScale
     /** 初始高度 */
     int originHeight
+    /** 最低高度 */
+    int lowestHeight
     /** 初始速度 */
     int originSpeed
     /** 初始加速度 */
@@ -53,6 +55,7 @@ public class Projectiles
         this.isTarget = true
         this.judgmentRange = 20
         this.modelScale = 1.
+        this.lowestHeight = 50
 
     /** 飞行道具死亡回调 */
     function setDeathCallback(trigger callbackTrigger)
@@ -80,14 +83,12 @@ public class Projectiles
             let _target = _v.targetMap.get(_key)
 
             if _target.isAlive()
-                let objPos = _target.getPos()
-                let curPos = _fx.getPos2()
-                .moveTowards(objPos, _v.originSpeed.toReal()*0.02)
-                // 转向待完善
-                _fx..setXYAngle(curPos.angleTo(objPos))
-                .setXY(curPos)
+                let objPos = _target.getPos3with(_v.lowestHeight.toReal())
+                let curPos = _fx.getPos3()
+                _fx..setXYAngle(curPos.angleTo2d(objPos))
+                ..setXYZ(curPos.moveTowards(objPos, _v.originSpeed.toReal()*0.02), true)
 
-                let afterPos = _fx.getPos2()
+                let afterPos = _fx.getPos3()
                 if afterPos.distanceTo(objPos) < _v.judgmentRange.toReal()
                     _v.fxMap.remove(_key)
                     _v.targetMap.remove(_key)
@@ -106,13 +107,12 @@ public class Projectiles
                     let __v = __t.getData() castTo thistype
                     let __key = __t.getHandleId()
                     let __fx = __v.fxMap.get(__key)
-                    let objPos = vec2(__v.objPosMapX.get(__key), __v.objPosMapY.get(__key))
-                    let curPos = __fx.getPos2()
-                    .moveTowards(objPos, __v.originSpeed.toReal()*0.02)
-                    __fx..setXYAngle(curPos.angleTo(objPos))
-                    .setXY(curPos)
+                    let objPos = vec3(__v.objPosMapX.get(__key), __v.objPosMapY.get(__key), __v.lowestHeight.toReal())
+                    let curPos = __fx.getPos3()
+                    __fx..setXYAngle(curPos.angleTo2d(objPos))
+                    ..setXYZ(curPos.moveTowards(objPos, __v.originSpeed.toReal()*0.02), true)
 
-                    let afterPos = __fx.getPos2()
+                    let afterPos = __fx.getPos3()
                     if afterPos.distanceTo(objPos) < __v.judgmentRange.toReal()
                         __v.fxMap.remove(__key)
                         __v.objPosMapX.remove(__key)

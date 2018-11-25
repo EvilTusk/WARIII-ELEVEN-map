@@ -1,51 +1,49 @@
-package RangeSoldier
+package TestUnit
 import UnitObjEditing
 import UnitBase
 import Projectiles
 
-public class RangeSoldier extends UnitBase
+public class TestUnit extends UnitBase
     /** 单位ID */
-    static constant int unitId = 'u002'
+    static constant int unitId = 'h000'
 
     construct()
-        unitID = 'u002'
-        sAD = 24
+        unitID = 'h000'
+        sAD = 400
         sAP = 0
         sAR = 0
         sMR = 0
-        sHP = 296
+        sHP = 10000
         sMP = 0
-        sAS = 0.67
-        sMS = 325
+        sAS = 2.5
+        sMS = 400
         sRH = 0
         sRM = 0
-        uAD = 4
-        uHP = 7.88
-        uAR = 0
-        uMR = 0
-        sAttackRange = 550
+        sAttackRange = 450
         sIsMelee = false
         sUnitModelPath = "Stalker.mdl"
         sUnitAttackProjectiles = new Projectiles(this, "Cannonball.mdl")
-        sUnitAttackProjectiles.originHeight = 50
-        sUnitAttackProjectiles.originSpeed = 250
+        sUnitAttackProjectiles.originHeight = 60
+        sUnitAttackProjectiles.originSpeed = 600
         sUnitAttackProjectiles.modelScale = .4
         initState()
 
+init
+    new TestUnit().create(Player(0), vec2(0, 0), angle(0.))
 
 @compiletime function create()
-    UnitDefinition u = compileGenerateUnit('u002') castTo UnitDefinition
+    UnitDefinition u = compileGenerateUnit('h000') castTo UnitDefinition
     u.setModelFile("Stalker.mdl")
-    u.setSpeedBase(325)
+    u.setSpeedBase(400)
     u.setAttacksEnabled(1)
-    u.setAttack1CooldownTime(1.6)
+    u.setAttack1CooldownTime(0.4)
     u.setAttack1Range(550)
     u.setShadowImageCenterX(14)
     u.setShadowImageCenterY(14)
     u.setShadowImageWidth(60)
     u.setShadowImageHeight(60)
-    u.setSelectionScale(.8)
-    u.setScalingValue(.8)
+    u.setSelectionScale(1.)
+    u.setScalingValue(1.2)
     u.setScaleProjectiles(true)
     u.setAnimationWalkSpeed(300)
     u.setAnimationRunSpeed(400)

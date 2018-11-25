@@ -4,6 +4,7 @@ import HashMap
 import TriggerUtil
 import initlater DamageSystem
 import initlater Projectiles
+import LinkedList
 
 HashMap<int, UnitBase> unitBaseMap = new HashMap<int, UnitBase>()
 
@@ -108,6 +109,8 @@ public abstract class UnitBase
     real cAttackRange
     /** 当前是否近战 */
     bool cIsMelee
+    /** 当前等级 */
+    int cLV = 1
 
     /** 当前模型路径 */
     protected string cUnitModelPath
@@ -121,6 +124,18 @@ public abstract class UnitBase
 
     /** 远程攻击触发器 */
     private trigger rangeAttackTrigger
+
+
+
+    /** 时点-死亡时 */
+    LinkedList<trigger> onUnitDeathTriggerList = new LinkedList<trigger>()
+
+
+    ondestroy
+        cUnit.clearUnitBase()
+        assistTrigger.release()
+        rangeAttackTrigger.release()
+        onUnitDeathTriggerList.clear()
 
     /** 初始化当前状态 */
     protected function initState()
@@ -170,11 +185,12 @@ public abstract class UnitBase
         ..addCondition(Condition(() -> begin
             let ct = GetTriggeringTrigger()
             let v = ct.getData() castTo UnitBase
-            if v castTo int != 0
-                ct.clearData()
-                v.getUnit().clearUnitBase()
-                ct.release()
-                v.rangeAttackTrigger.release()
+
+            // 时点-死亡时
+            for m in v.onUnitDeathTriggerList
+                m.evaluate()
+
+            if v != null
                 destroy v
         end))
         return cUnit
@@ -212,12 +228,44 @@ public abstract class UnitBase
         else
             cUnitAttackProjectiles.run(this.getUnit().getPos(), objUnit, new DamageEvent(this, objUnit) castTo int)
 
+    /** 设置等级 */
+    function setLV(int lv)
+        cLV = lv
+        cAD = sAD + (lv-1)*uAD
+        cAP = sAP + (lv-1)*uAP
+        cAR = sAR + (lv-1)*uAR
+        cMR = sMR + (lv-1)*uMR
+        cHP = sHP + (lv-1)*uHP
+        cMP = sMP + (lv-1)*uMP
+        cHPMax = sHP + (lv-1)*uHP
+        cMPMax = sHP + (lv-1)*uMP
+        cAS = sAS + (lv-1)*uAS
+        cMS = sMS + (lv-1)*uMS
+        cRH = sRH + (lv-1)*uRH
+        cRM = sRM + (lv-1)*uRM
+
+    /** 升级 */
+    function lvUp()
+        cLV++
+        cAD = sAD + (cLV-1)*uAD
+        cAP = sAP + (cLV-1)*uAP
+        cAR = sAR + (cLV-1)*uAR
+        cMR = sMR + (cLV-1)*uMR
+        cHP = sHP + uHP
+        cMP = sMP + uMP
+        cHPMax = sHP + (cLV-1)*uHP
+        cMPMax = sHP + (cLV-1)*uMP
+        cAS = sAS + (cLV-1)*uAS
+        cMS = sMS + (cLV-1)*uMS
+        cRH = sRH + (cLV-1)*uRH
+        cRM = sRM + (cLV-1)*uRM
+
 
 
 
 /** 生成单位 */
-public function compileGenerateUnit(int unitId) returns UnitDefinition
-    UnitDefinition u = new UnitDefinition(unitId, 'hfoo')
+public function compileGenerateUnit(int unitId) returns UnitOrBuildingOrHeroDefinition
+    UnitOrBuildingOrHeroDefinition u = new UnitOrBuildingOrHeroDefinition(unitId, 'hfoo')
 
     u.setNormalAbilities("")
     u.setCollisionSize(20.)

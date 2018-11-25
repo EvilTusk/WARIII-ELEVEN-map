@@ -1,0 +1,118 @@
+package TowerSystem
+import Define
+import Tower1
+import Tower2
+import Tower3
+import CrystalSystem
+
+class TowerSystem
+    static thistype instance
+
+    private trigger tower1OnDeathL
+    private trigger tower1OnDeathR
+    private trigger tower2OnDeathL
+    private trigger tower2OnDeathR
+    private trigger tower3LOnDeathL
+    private trigger tower3ROnDeathL
+    private trigger tower3LOnDeathR
+    private trigger tower3ROnDeathR
+
+    private bool tower3LHadBoomL = false
+    private bool tower3RHadBoomL = false
+    private bool tower3LHadBoomR = false
+    private bool tower3RHadBoomR = false
+
+    private Tower1 tower1L
+    private Tower1 tower1R
+    private Tower2 tower2L
+    private Tower2 tower2R
+    private Tower3 tower3LL
+    private Tower3 tower3RL
+    private Tower3 tower3LR
+    private Tower3 tower3RR
+
+    construct()
+        instance = this
+
+        // 注册塔的死亡回调
+        tower1OnDeathL = CreateTrigger()..addCondition(Condition(() -> begin
+            instance.tower2L.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+        tower1OnDeathR = CreateTrigger()..addCondition(Condition(() -> begin
+            instance.tower2R.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+        tower2OnDeathL = CreateTrigger()..addCondition(Condition(() -> begin
+            CrystalSystem.instance.crystalL.getUnit().setInvulnerable(false)
+            instance.tower3LL.getUnit().setInvulnerable(false)
+            instance.tower3RL.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+        tower2OnDeathR = CreateTrigger()..addCondition(Condition(() -> begin
+            CrystalSystem.instance.crystalR.getUnit().setInvulnerable(false)
+            instance.tower3LR.getUnit().setInvulnerable(false)
+            instance.tower3RR.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+
+        tower3LOnDeathL = CreateTrigger()..addCondition(Condition(() -> begin
+            instance.tower3LHadBoomL = true
+            if instance.tower3LHadBoomL and instance.tower3RHadBoomL
+                NexusSystem.instance.nexusL.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+        tower3ROnDeathL = CreateTrigger()..addCondition(Condition(() -> begin
+            instance.tower3RHadBoomL = true
+            if instance.tower3LHadBoomL and instance.tower3RHadBoomL
+                NexusSystem.instance.nexusL.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+        tower3LOnDeathR = CreateTrigger()..addCondition(Condition(() -> begin
+            instance.tower3LHadBoomR = true
+            if instance.tower3LHadBoomR and instance.tower3RHadBoomR
+                NexusSystem.instance.nexusR.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+        tower3ROnDeathR = CreateTrigger()..addCondition(Condition(() -> begin
+            instance.tower3RHadBoomR = true
+            if instance.tower3LHadBoomR and instance.tower3RHadBoomR
+                NexusSystem.instance.nexusR.getUnit().setInvulnerable(false)
+            GetTriggeringTrigger().destr()
+        end))
+
+        tower1L = new Tower1()
+        tower1L..create(PLAYER_LEFT_ARMY, LOC_LEFT_TOWER_I, angle(0))
+        .onUnitDeathTriggerList.add(tower1OnDeathL)
+        tower2L = new Tower2()
+        tower2L..create(PLAYER_LEFT_ARMY, LOC_LEFT_TOWER_II, angle(0))
+        .onUnitDeathTriggerList.add(tower2OnDeathL)
+        tower2L.getUnit().setInvulnerable(true)
+        tower3LL = new Tower3()
+        tower3LL..create(PLAYER_LEFT_ARMY, LOC_LEFT_TOWER_G_L, angle(0))
+        .onUnitDeathTriggerList.add(tower3LOnDeathL)
+        tower3LL.getUnit().setInvulnerable(true)
+        tower3RL = new Tower3()
+        tower3RL..create(PLAYER_LEFT_ARMY, LOC_LEFT_TOWER_G_R, angle(0))
+        .onUnitDeathTriggerList.add(tower3ROnDeathL)
+        tower3RL.getUnit().setInvulnerable(true)
+
+        tower1R = new Tower1()
+        tower1R..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_TOWER_I, angle(0))
+        .onUnitDeathTriggerList.add(tower1OnDeathR)
+        tower2R = new Tower2()
+        tower2R..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_TOWER_II, angle(0))
+        .onUnitDeathTriggerList.add(tower2OnDeathR)
+        tower2R.getUnit().setInvulnerable(true)
+        tower3LR = new Tower3()
+        tower3LR..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_TOWER_G_L, angle(0))
+        .onUnitDeathTriggerList.add(tower3LOnDeathR)
+        tower3LR.getUnit().setInvulnerable(true)
+        tower3RR = new Tower3()
+        tower3RR..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_TOWER_G_R, angle(0))
+        .onUnitDeathTriggerList.add(tower3ROnDeathR)
+        tower3RR.getUnit().setInvulnerable(true)
+
+init
+    new TowerSystem()
+

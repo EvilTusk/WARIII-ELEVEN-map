@@ -1,0 +1,38 @@
+package HealLand
+import UnitBase
+import UnitObjEditing
+
+
+public class HealLand extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'b007'
+
+    construct()
+        unitID = 'b007'
+        sAD = 0
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 100000
+        sMP = 0
+        sAS = 0
+        sMS = 0
+        sRH = 0
+        sRM = 0
+        sAttackRange = 0
+        sIsMelee = true
+        sUnitModelPath = "foaPortal\\foaPortal.mdl"
+        initState()
+    
+
+@compiletime function create()
+    BuildingDefinition u = compileGenerateUnit('b007') castTo BuildingDefinition
+    u.setIsaBuilding(true)
+    u.setCollisionSize(200.)
+    u.setPathingMap("PathTextures\\4x4SimpleSolid.tga")
+    u.setModelFile("foaPortal\\foaPortal.mdl")
+    u.setSpeedBase(0)
+    u.setAttacksEnabled(0)
+    u.setSelectionScale(-1.)
+    u.setScalingValue(3.6)
+    u.setScaleProjectiles(true)

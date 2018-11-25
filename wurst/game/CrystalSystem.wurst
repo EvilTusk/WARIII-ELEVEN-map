@@ -1,0 +1,106 @@
+package CrystalSystem
+import Define
+import Crystal
+import Nexus
+import Shop
+import HealLand
+import SoldierAttack
+import TimerUtils
+
+public class CrystalSystem
+    static thistype instance
+    bool isPlayerLeftCrystalAlive
+    bool isPlayerRightCrystalAlive
+    trigger onPlayerLeftCrystalDeath
+    trigger onPlayerRightCrystalDeath
+
+    Crystal crystalL
+    Crystal crystalR
+
+    construct()
+        instance = this
+
+        onPlayerLeftCrystalDeath = CreateTrigger()
+        ..addCondition(Condition(function onPlayerLeftCrystalDeath))
+        onPlayerRightCrystalDeath = CreateTrigger()
+        ..addCondition(Condition(function onPlayerRightCrystalDeath))
+
+        crystalL = new Crystal()
+        crystalL..create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, angle(0.))
+        .onUnitDeathTriggerList.add(onPlayerLeftCrystalDeath)
+        crystalL.getUnit().setInvulnerable(true)
+        crystalR =new Crystal()
+        crystalR..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, angle(0.))
+        .onUnitDeathTriggerList.add(onPlayerRightCrystalDeath)
+        crystalR.getUnit().setInvulnerable(true)
+
+    private static function onPlayerLeftCrystalDeath()
+        SoldierSystem.instance.superUnitCountRight = 1
+        SoldierSystem.instance.rightHasSuperSoldier = true
+        // 水晶复活
+        getTimer().start(180) ->
+            new Crystal()
+            ..create(PLAYER_LEFT_ARMY, LOC_LEFT_CRYSTAL, angle(0.))
+            .onUnitDeathTriggerList.add(instance.onPlayerLeftCrystalDeath)
+
+            SoldierSystem.instance.rightHasSuperSoldier = false
+            GetExpiredTimer().release()
+
+    private static function onPlayerRightCrystalDeath()
+        SoldierSystem.instance.superUnitCountLeft = 1
+        SoldierSystem.instance.leftHasSuperSoldier = true
+        // 水晶复活
+        getTimer().start(180) ->
+            new Crystal()
+            ..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_CRYSTAL, angle(0.))
+            .onUnitDeathTriggerList.add(instance.onPlayerRightCrystalDeath)
+
+            SoldierSystem.instance.leftHasSuperSoldier = false
+            GetExpiredTimer().release()
+
+
+public class NexusSystem
+    static thistype instance
+    private trigger onNexusBoomLeft
+    private trigger onNexusBoomRight
+    Nexus nexusL
+    Nexus nexusR
+
+    construct()
+        instance = this
+
+        onNexusBoomLeft = CreateTrigger()..addCondition(Condition(function onNexusBoomLeft))
+        onNexusBoomRight = CreateTrigger()..addCondition(Condition(function onNexusBoomRight))
+
+        nexusL = new Nexus()
+        nexusL..create(PLAYER_LEFT_ARMY, LOC_LEFT_NEXUS, angle(0.))
+        .onUnitDeathTriggerList.add(onNexusBoomLeft)
+        nexusL.getUnit().setInvulnerable(true)
+        nexusR = new Nexus()
+        nexusR..create(PLAYER_RIGHT_ARMY, LOC_RIGHT_NEXUS, angle(0.))
+        .onUnitDeathTriggerList.add(onNexusBoomLeft)
+        nexusR.getUnit().setInvulnerable(true)
+
+    private static function onNexusBoomLeft()
+        PauseAllUnitsBJ(true)
+        CreateTrigger()..registerEnterRegion(CreateRegion()..addRect(GetPlayableMapRect()), null)
+        ..addAction() ->
+            GetTriggerUnit().pause()
+        destroy SoldierSystem.instance
+
+    private static function onNexusBoomRight()
+        PauseAllUnitsBJ(true)
+        CreateTrigger()..registerEnterRegion(CreateRegion()..addRect(GetPlayableMapRect()), null)
+        ..addAction() ->
+            GetTriggerUnit().pause()
+        destroy SoldierSystem.instance
+
+
+init
+    new Shop().create(PLAYER_LEFT_ARMY, LOC_LEFT_SHOP, angle(0.))
+    new Shop().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_SHOP, angle(0.))
+    new HealLand().create(PLAYER_LEFT_ARMY, LOC_LEFT_HEAL, angle(0.25*PI))
+    new HealLand().create(PLAYER_RIGHT_ARMY, LOC_RIGHT_HEAL, angle(1.25*PI))
+
+    new CrystalSystem()
+    new NexusSystem()

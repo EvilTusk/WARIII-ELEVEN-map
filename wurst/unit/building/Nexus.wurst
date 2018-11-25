@@ -1,0 +1,38 @@
+package Nexus
+import UnitBase
+import UnitObjEditing
+
+
+public class Nexus extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'b005'
+
+    construct()
+        unitID = 'b005'
+        sAD = 0
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 5500
+        sMP = 0
+        sAS = 0
+        sMS = 0
+        sRH = 0
+        sRM = 0
+        sAttackRange = 0
+        sIsMelee = true
+        sUnitModelPath = "MagicOrb.mdl"
+        initState()
+    
+
+@compiletime function create()
+    BuildingDefinition u = compileGenerateUnit('b005') castTo BuildingDefinition
+    u.setIsaBuilding(true)
+    u.setCollisionSize(160.)
+    u.setPathingMap("PathTextures\\4x4SimpleSolid.tga")
+    u.setModelFile("MagicOrb.mdl")
+    u.setSpeedBase(0)
+    u.setAttacksEnabled(0)
+    u.setSelectionScale(2.)
+    u.setScalingValue(2.)
+    u.setScaleProjectiles(true)

@@ -1,0 +1,38 @@
+package Crystal
+import UnitBase
+import UnitObjEditing
+
+
+public class Crystal extends UnitBase
+    /** 单位ID */
+    static constant int unitId = 'b004'
+
+    construct()
+        unitID = 'b004'
+        sAD = 0
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 4000
+        sMP = 0
+        sAS = 0
+        sMS = 0
+        sRH = 0
+        sRM = 0
+        sAttackRange = 0
+        sIsMelee = true
+        sUnitModelPath = "HeartCrystal.mdl"
+        initState()
+    
+
+@compiletime function create()
+    BuildingDefinition u = compileGenerateUnit('b004') castTo BuildingDefinition
+    u.setIsaBuilding(true)
+    u.setCollisionSize(120.)
+    u.setPathingMap("PathTextures\\4x4SimpleSolid.tga")
+    u.setModelFile("HeartCrystal.mdl")
+    u.setSpeedBase(0)
+    u.setAttacksEnabled(0)
+    u.setSelectionScale(1.)
+    u.setScalingValue(1.)
+    u.setScaleProjectiles(true)

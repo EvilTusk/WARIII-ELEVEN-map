@@ -1,2 +1,68 @@
 package HeroBase
+import UnitBase
+import UnitObjEditing
 
+public int SKILLLEARNING_NEGATIVE = 20
+
+public class HeroBase extends UnitBase
+    /** Q技能当前等级 */
+    int cSkillLevelQ = 0
+    /** W技能当前等级 */
+    int cSkillLevelW = 0
+    /** E技能当前等级 */
+    int cSkillLevelE = 0
+    /** R技能当前等级 */
+    int cSkillLevelR = 0
+
+    /** Q技能学习曲线 */
+    private int array[6] skillLearningTreeQ = [1, 3, 5, 7, 9, SKILLLEARNING_NEGATIVE]
+    /** W技能学习曲线 */
+    private int array[6] skillLearningTreeW = [1, 3, 5, 7, 9, SKILLLEARNING_NEGATIVE]
+    /** E技能学习曲线 */
+    private int array[6] skillLearningTreeE = [1, 3, 5, 7, 9, SKILLLEARNING_NEGATIVE]
+    /** R技能学习曲线 */
+    private int array[6] skillLearningTreeR = [6, 11, 16, SKILLLEARNING_NEGATIVE, SKILLLEARNING_NEGATIVE, SKILLLEARNING_NEGATIVE]
+
+
+
+/** 生成英雄 */
+public function compileGenerateHero(int unitId) returns HeroDefinition
+    HeroDefinition h = new HeroDefinition(unitId, 'Hpal')
+
+    h.setNormalAbilities("")
+    h.setCollisionSize(20.)
+    h.setDeathTimeseconds(2.)
+    h.setAnimationCastPoint(0.)
+    h.setAnimationCastBackswing(0.)
+    h.setTurnRate(3)
+    h.setArmorType(ArmorType.Divine)
+    h.setAcquisitionRange(600.)
+    h.setDefenseBase(100)
+    h.setArmorSoundType(ArmorSoundType.Flesh)
+    h.setAttack1AnimationDamagePoint(0.)
+    h.setAttack1AnimationBackswingPoint(0.)
+    h.setAttack1WeaponSound(WeaponSound.Nothing)
+    h.setAttack1AttackType(AttackType.Normal)
+    h.setAttack1DamageBase(1)
+    h.setAttack1DamageSidesperDie(1)
+    h.setAttack1DamageNumberofDice(1)
+    h.setAttack1RangeMotionBuffer(300)
+    h.setHitPointsMaximumBase(100)
+    h.setHitPointsRegenerationRate(0)
+    h.setManaMaximum(0)
+    h.setManaRegeneration(0)
+    h.setSightRadiusDay(1200)
+    h.setSightRadiusNight(1200)
+    h.setCanFlee(false)
+
+    h.setStartingStrength(100)
+    h.setStartingIntelligence(100)
+    h.setStartingAgility(100)
+    h.setStrengthPerLevel(0.)
+    h.setIntelligencePerLevel(0.)
+    h.setAgilityPerLevel(0.)
+
+    h.setHeroAbilities("")
+    h.hideHeroDeathMsg(true)
+    
+    return h

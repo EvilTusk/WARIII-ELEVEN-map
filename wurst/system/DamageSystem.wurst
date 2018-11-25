@@ -34,8 +34,8 @@ public class DamageEvent
 
     /** 开始伤害计算 */
     function run()
-        let adDamage = (adSta + srcUnit.cAD*adMul) * (100./100.+srcUnit.cAR)
-        let apDamage = (apSta + srcUnit.cAP*apMul) * (100./100.+srcUnit.cMR)
+        let adDamage = (adSta + srcUnit.cAD*adMul) * (100./(100.+dstUnit.cAR))
+        let apDamage = (apSta + srcUnit.cAP*apMul) * (100./(100.+dstUnit.cMR))
         
         dstUnit.setHPDecrease(adDamage + apDamage)
 
