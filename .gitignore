@@ -3,3 +3,6 @@ wurst.dependencies
 /.vscode
 RunMap.bat
 /imports
+*.psd
+*.tga
+*.bmp

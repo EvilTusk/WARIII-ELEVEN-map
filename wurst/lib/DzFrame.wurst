@@ -46,8 +46,8 @@ public class Frame
         this.frameVar = frameVar
 
     /** 创建frame */
-    construct(string frame, int parent, int id)
-        frameVar = DzCreateFrame(frame, parent, id)
+    construct(string frame, thistype parent, int id)
+        frameVar = DzCreateFrame(frame, parent.frameVar, id)
 
     /** 根据tag创建frame */
     construct(string frameType, string name, thistype parent, string template, int id)
@@ -103,8 +103,8 @@ public class Frame
         DzEnableWideScreen(enable)
 
     /** 设置所有锚点到目标frame上 */
-    function setAllPoints(int relativeFrame) returns boolean
-        return DzFrameSetAllPoints(frameVar, relativeFrame)
+    function setAllPoints(Frame relativeFrame) returns boolean
+        return DzFrameSetAllPoints(frameVar, relativeFrame.frameVar)
 
     /** 设置焦点 */
     function setFocus(boolean enable) returns boolean

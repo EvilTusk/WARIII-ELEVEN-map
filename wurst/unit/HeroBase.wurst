@@ -30,7 +30,7 @@ public function compileGenerateHero(int unitId) returns HeroDefinition
     HeroDefinition h = new HeroDefinition(unitId, 'Hpal')
 
     h.setNormalAbilities("")
-    h.setCollisionSize(20.)
+    h.setCollisionSize(40.)
     h.setDeathTimeseconds(2.)
     h.setAnimationCastPoint(0.)
     h.setAnimationCastBackswing(0.)
@@ -39,8 +39,6 @@ public function compileGenerateHero(int unitId) returns HeroDefinition
     h.setAcquisitionRange(600.)
     h.setDefenseBase(100)
     h.setArmorSoundType(ArmorSoundType.Flesh)
-    h.setAttack1AnimationDamagePoint(0.)
-    h.setAttack1AnimationBackswingPoint(0.)
     h.setAttack1WeaponSound(WeaponSound.Nothing)
     h.setAttack1AttackType(AttackType.Normal)
     h.setAttack1DamageBase(1)

@@ -1,0 +1,52 @@
+package Yasuo
+import UnitObjEditing
+import HeroBase
+
+public class Yasuo extends HeroBase
+    /** 单位ID */
+    static constant int unitId = 'H001'
+
+    construct()
+        unitID = 'H001'
+        sAD = 1000
+        sAP = 0
+        sAR = 0
+        sMR = 0
+        sHP = 477000
+        sMP = 0
+        sAS = 1.25
+        sMS = 325
+        sRH = 0
+        sRM = 0
+        uAD = 2.83
+        uHP = 55.125
+        uAR = 0.67
+        uMR = 0
+        sAttackRange = 130
+        sIsMelee = true
+        sUnitModelPath = "dekan_lol_yasuo.mdl"
+        initState()
+
+
+@compiletime function create()
+    HeroDefinition h = compileGenerateHero('H001')
+    h.setModelFile("dekan_lol_yasuo.mdl")
+    h.setSpeedBase(325)
+    h.setAttacksEnabled(1)
+    h.setAttack1CooldownTime(.8)
+    h.setAttack1Range(130)
+    h.setShadowImageCenterX(10)
+    h.setShadowImageCenterY(10)
+    h.setShadowImageWidth(80)
+    h.setShadowImageHeight(80)
+    h.setSelectionScale(-1.)
+    h.setScalingValue(.8)
+    h.setScaleProjectiles(true)
+    h.setAnimationWalkSpeed(200)
+    h.setAnimationRunSpeed(200)
+
+    h.setAttack1AnimationDamagePoint(0.22)
+    h.setAttack1AnimationBackswingPoint(0.22)
+
+init
+    new Yasuo().create(Player(0), vec2(0., 0.), angle(0.))

@@ -1,9 +1,9 @@
 package UIIndex
 import DzFrame
+import StatusBar
 
 init
-    SetTimeOfDayScale(0)
-    SetTimeOfDay(0.)
+    Frame.loadToc("ui\\custom.toc")
     Frame.hideInterface()
     Frame.editBlackBorders(0, 0)
     Frame gameUI = Frame.getGetGameUI()
@@ -18,3 +18,5 @@ init
     ..setPoint(FrameAnchorPoint.TOPLEFT, gameUI, FrameAnchorPoint.TOPLEFT, 0.004, -0.004)
     ..setPoint(FrameAnchorPoint.BOTTOMRIGHT, gameUI, FrameAnchorPoint.BOTTOMRIGHT, -0.004, 0.004)
     destroy gameUI
+    StatusBarStruct bar = new StatusBarStruct()
+    bar.show()
