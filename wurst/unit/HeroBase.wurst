@@ -23,6 +23,21 @@ public class HeroBase extends UnitBase
     /** R技能学习曲线 */
     private int array[6] skillLearningTreeR = [6, 11, 16, SKILLLEARNING_NEGATIVE, SKILLLEARNING_NEGATIVE, SKILLLEARNING_NEGATIVE]
 
+    /** 英雄头像 */
+    string heroIcon = ""
+    /** 英雄头像2 */
+    string heroIconG = ""
+    /** 被动技能图标 */
+    string cSkillIconP = ""
+    /** Q技能图标 */
+    string cSkillIconQ = ""
+    /** W技能图标 */
+    string cSkillIconW = ""
+    /** E技能图标 */
+    string cSkillIconE = ""
+    /** R技能图标 */
+    string cSkillIconR = ""
+
 
 
 /** 生成英雄 */

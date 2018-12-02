@@ -6,25 +6,33 @@ public class Yasuo extends HeroBase
     /** 单位ID */
     static constant int unitId = 'H001'
 
+
     construct()
         unitID = 'H001'
-        sAD = 1000
+        sAD = 63
         sAP = 0
-        sAR = 0
-        sMR = 0
-        sHP = 477000
-        sMP = 0
-        sAS = 1.25
-        sMS = 325
-        sRH = 0
+        sAR = 30
+        sMR = 30
+        sHP = 523
+        sMP = 100
+        sAS = 0.67
+        sMS = 345
+        sRH = 1.3
         sRM = 0
-        uAD = 2.83
-        uHP = 55.125
-        uAR = 0.67
+        uAD = 0
+        uHP = 0
+        uAR = 0
         uMR = 0
-        sAttackRange = 130
+        sAttackRange = 175
         sIsMelee = true
         sUnitModelPath = "dekan_lol_yasuo.mdl"
+        heroIcon = "Yasuo\\H.blp"
+        heroIconG = "Yasuo\\HG.tga"
+        cSkillIconP = "Yasuo\\PASP.blp"
+        cSkillIconQ = "Yasuo\\BTNQ.blp"
+        cSkillIconW = "Yasuo\\BTNW.blp"
+        cSkillIconE = "Yasuo\\BTNE.blp"
+        cSkillIconR = "Yasuo\\BTNR.blp"
         initState()
 
 
@@ -33,8 +41,8 @@ public class Yasuo extends HeroBase
     h.setModelFile("dekan_lol_yasuo.mdl")
     h.setSpeedBase(325)
     h.setAttacksEnabled(1)
-    h.setAttack1CooldownTime(.8)
-    h.setAttack1Range(130)
+    h.setAttack1CooldownTime(1.5)
+    h.setAttack1Range(175)
     h.setShadowImageCenterX(10)
     h.setShadowImageCenterY(10)
     h.setShadowImageWidth(80)
@@ -48,5 +56,4 @@ public class Yasuo extends HeroBase
     h.setAttack1AnimationDamagePoint(0.22)
     h.setAttack1AnimationBackswingPoint(0.22)
 
-init
-    new Yasuo().create(Player(0), vec2(0., 0.), angle(0.))
+    

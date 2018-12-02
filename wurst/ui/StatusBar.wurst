@@ -1,24 +1,35 @@
 package StatusBar
 
 import DzFrame
-import Timer
+import HeroBase
 import TimerUtils
 
 public class StatusBarStruct
-    private Backdrop hpBar
-    private Backdrop mpBar
+    static thistype instance
+    private Backdrop hpBarBack
+    private Backdrop mpBarBack
     private Text hpText
     private Text mpText
-    private Frame hpRevText
-    private Frame mpRevText
-    private Frame heroIcon
-    private unit hero
+    private Text hpRevText
+    private Text mpRevText
+    private Text adText
+    private Text apText
+    private Text arText
+    private Text mrText
+    private Text asText
+    private Text msText
+    private Backdrop heroIcon
+    private Backdrop pIcon
+    private Backdrop qIcon
+    private Backdrop wIcon
+    private Backdrop eIcon
+    private Backdrop rIcon
+    private HeroBase objHero
 
-    construct()
-        hero = null
+    construct(HeroBase objHero)
+        instance = this
 
-    ondestroy
-        hero = null
+        this.objHero = objHero
 
     function show()
         let gameUI = Frame.getGetGameUI()
@@ -31,123 +42,85 @@ public class StatusBarStruct
         ..clearAllPoints()
         ..setPoint(FrameAnchorPoint.BOTTOMRIGHT, mapBack, FrameAnchorPoint.BOTTOMRIGHT, -0.004, 0.004)
         ..setPoint(FrameAnchorPoint.TOPLEFT, mapBack, FrameAnchorPoint.TOPLEFT, 0.004, -0.004)
-        //..setSize(0.12, 0.16)
 
-        let heroStatusBack = new Frame("HeroStatusBack", gameUI, 0)
-        ..setPoint(FrameAnchorPoint.BOTTOM, gameUI, FrameAnchorPoint.BOTTOM, 0., 0.0003)
-        ..setSize(0.252, 0.048)
-        hpBar = new Frame("BACKDROP", "HpBar", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
-        mpBar = new Frame("BACKDROP", "MpBar", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
-        hpText = new Frame("TEXT", "HpText", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Text
-        mpText = new Frame("TEXT", "MpText", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Text
+        let heroStatusBack = new Frame("HeroStatusBack", gameUI, 0) castTo Backdrop
+        heroStatusBack..setPoint(FrameAnchorPoint.BOTTOM, gameUI, FrameAnchorPoint.BOTTOM, 0., 0.0003)
 
-        mpBar..show(true)
-        ..setTexture("ui\\mpBar.blp", 0)
-        ..setPoint(FrameAnchorPoint.BOTTOMLEFT, heroStatusBack, FrameAnchorPoint.BOTTOM, -0.12, 0.006)
-        .setSize(0.24, 0.018)
+        heroIcon = heroStatusBack.findByName("HeroIcon", 0) castTo Backdrop
+        heroIcon.setTexture(objHero.heroIconG, 0)
 
-        hpBar..show(true)
-        ..setTexture("ui\\hpBar.blp", 0)
-        ..setPoint(FrameAnchorPoint.BOTTOMLEFT, mpBar, FrameAnchorPoint.TOPLEFT, 0., 0.0004)
-        .setSize(0.24, 0.018)
-        
-        mpText.show(true)
-        mpText.setPoint(FrameAnchorPoint.CENTER, mpBar, FrameAnchorPoint.LEFT, 0.12, 0.)
-        mpText.setText("0/0")
-        
-        hpText.show(true)
-        hpText.setPoint(FrameAnchorPoint.CENTER, hpBar, FrameAnchorPoint.LEFT, 0.12, 0.)
-        hpText.setText("0/0")
- 
-        /*let t = getTimer()
-        t.setData(this castTo int)
-        t.startPeriodic(0.2) ->
-            let t = GetExpiredTimer()
-            while i < 12
-                if udg_Hero[i] != null
-                    break
-                i++
-            
-            if i >= 12
-                return
-            
-            if Player(i) == GetLocalPlayer()
-                let v = GetTimerData(t)
-                ReleaseTimer(t)
-                v.setHero(udg_Hero[i])*/
+        adText = heroStatusBack.findByName("AdText", 0) castTo Text
+        apText = heroStatusBack.findByName("ApText", 0) castTo Text
+        arText = heroStatusBack.findByName("ArText", 0) castTo Text
+        mrText = heroStatusBack.findByName("MrText", 0) castTo Text
+        asText = heroStatusBack.findByName("AsText", 0) castTo Text
+        msText = heroStatusBack.findByName("MsText", 0) castTo Text
+
+        pIcon = heroStatusBack.findByName("PIcon", 0) castTo Backdrop
+        pIcon.setTexture(objHero.cSkillIconP, 0)
+        qIcon = heroStatusBack.findByName("QIcon", 0) castTo Backdrop
+        qIcon.setTexture(objHero.cSkillIconQ, 0)
+        wIcon = heroStatusBack.findByName("WIcon", 0) castTo Backdrop
+        wIcon.setTexture(objHero.cSkillIconW, 0)
+        eIcon = heroStatusBack.findByName("EIcon", 0) castTo Backdrop
+        eIcon.setTexture(objHero.cSkillIconE, 0)
+        rIcon = heroStatusBack.findByName("RIcon", 0) castTo Backdrop
+        rIcon.setTexture(objHero.cSkillIconR, 0)
+
+        hpBarBack = heroStatusBack.findByName("HpBarBack", 0) castTo Backdrop
+        mpBarBack = heroStatusBack.findByName("MpBarBack", 0) castTo Backdrop
+        hpText = heroStatusBack.findByName("HpBarText", 0) castTo Text
+        mpText = heroStatusBack.findByName("MpBarText", 0) castTo Text
+        hpRevText = heroStatusBack.findByName("HpBarRevText", 0) castTo Text
+        mpRevText = heroStatusBack.findByName("MpBarRevText", 0) castTo Text
+
+        let t = getTimer()
+        ..startPeriodic(0.01, function syncHero)
+
+        // pIcon = new Frame("BACKDROP", "pIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        // pIcon..show(true)
+        // ..setTexture(objHero.cSkillIconP, 0)
+        // ..setPoint(FrameAnchorPoint.TOPLEFT, heroIcon, FrameAnchorPoint.TOPRIGHT, 0.005, -0.005)
+        // .setSize(0.015, 0.02)
+
+        // qIcon = new Frame("BACKDROP", "qIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        // qIcon..show(true)
+        // ..setTexture(objHero.cSkillIconQ, 0)
+        // ..setPoint(FrameAnchorPoint.TOPLEFT, pIcon, FrameAnchorPoint.TOPRIGHT, 0.005, 0)
+        // .setSize(0.015, 0.02)
+
+        // wIcon = new Frame("BACKDROP", "wIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        // wIcon..show(true)
+        // ..setTexture(objHero.cSkillIconW, 0)
+        // ..setPoint(FrameAnchorPoint.TOPLEFT, qIcon, FrameAnchorPoint.TOPRIGHT, 0.005, 0)
+        // .setSize(0.015, 0.02)
+
+        // eIcon = new Frame("BACKDROP", "eIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        // eIcon..show(true)
+        // ..setTexture(objHero.cSkillIconE, 0)
+        // ..setPoint(FrameAnchorPoint.TOPLEFT, wIcon, FrameAnchorPoint.TOPRIGHT, 0.005, 0)
+        // .setSize(0.015, 0.02)
+
+        // rIcon = new Frame("BACKDROP", "rIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0) castTo Backdrop
+        // rIcon..show(true)
+        // ..setTexture(objHero.cSkillIconR, 0)
+        // ..setPoint(FrameAnchorPoint.TOPLEFT, eIcon, FrameAnchorPoint.TOPRIGHT, 0.005, 0)
+        // .setSize(0.015, 0.02)
 
 
-    /*function setHero(unit o) returns boolean
-        int ret
-        let gameUI = DzGetGameUI()
-        var skillIcon
-        
-        hero = o
-
-        let heroIconPath = YDWEGetObjectPropertyString(YDWE_OBJECT_TYPE_UNIT, GetUnitTypeId(hero), "Art")
-        ret = DzCreateFrameByTagName("BACKDROP", "HeroIcon", gameUI, "UI\\FrameDef\\Glue\\BattleNetTemplates.fdf", 0)
-        if ret == 0
-            return false
-            
-        heroIcon = ret
-        DzFrameShow(heroIcon, true)
-        DzFrameSetTexture(heroIcon, heroIconPath, 0)
-        DzFrameSetPoint(heroIcon, 8, m_mpBar, 6, -0.0003, 0.)
-        DzFrameSetSize(heroIcon, 0.03, 0.04)
-
-        for i = 0 to 3
-            skillIcon = DzFrameGetCommandBarButton(2, i)
-            DzFrameShow(skillIcon, true)
-            DzFrameClearAllPoints(skillIcon)
-            DzFrameSetPoint(skillIcon, 6, m_hpBar, 0, 0.03*i, 0.003)
-            DzFrameSetSize(skillIcon, 0.027, 0.036)
-        
-        for i = 0 to 3
-            skillIcon = DzFrameGetCommandBarButton(0, i)
-            DzFrameShow(skillIcon, true)
-            DzFrameClearAllPoints(skillIcon)
-            DzFrameSetPoint(skillIcon, 8, m_mpBar, 6, -(0.03*(3-i) + 0.10), 0.)
-            DzFrameSetSize(skillIcon, 0.027, 0.036)
-        
-        for i = 0 to 1
-            for j = 0 to 2
-                skillIcon = DzFrameGetItemBarButton(i*3 + j)
-                DzFrameShow(skillIcon, true)
-                DzFrameClearAllPoints(skillIcon)
-                DzFrameSetPoint(skillIcon, 6, m_mpBar, 6, 0.026*j + 0.25, 0.034*(1-i))
-                DzFrameSetSize(skillIcon, 0.024, 0.032)
-        
-        skillIcon = DzFrameGetCommandBarButton(1, 3)
-        DzFrameShow(skillIcon, true)
-        DzFrameClearAllPoints(skillIcon)
-        DzFrameSetPoint(skillIcon, 6, m_hpBar, 0, 0.03*5, 0.003)
-        DzFrameSetSize(skillIcon, 0.027, 0.036)
-            
-        let t = NewTimer()
-        SetTimerData(t, this)
-        TimerStart(t, 0.01, true) ->
-            let t = GetExpiredTimer()
-            var v = GetTimerData(t)
-            t = null
-            
-            v.syncHero()
-            
-        return true*/
-
-    /*function syncHero()
-        let heroHp = R2I(GetUnitState(m_hero, UNIT_STATE_LIFE))
-        let heroMaxHp = R2I(GetUnitState(m_hero, UNIT_STATE_MAX_LIFE))
-        let heroMp = R2I(GetUnitState(m_hero, UNIT_STATE_MANA))
-        let heroMaxMp = R2I(GetUnitState(m_hero, UNIT_STATE_MAX_MANA))
-        let curPlayer = GetOwningPlayer(m_hero)
-
-        if curPlayer != GetLocalPlayer()
-            return
-
-        DzFrameSetText(hpText, I2S(heroHp) + "/" + I2S(heroMaxHp))
-        DzFrameSetText(mpText, I2S(heroMp) + "/" + I2S(heroMaxMp))
-        DzFrameSetSize(hpBar, (I2R(heroHp)/I2R(heroMaxHp)) * 0.24, 0.015)
-        DzFrameSetSize(mpBar, (I2R(heroMp)/I2R(heroMaxMp)) * 0.24, 0.015)*/
+    static function syncHero()
+        instance.hpText.setText(instance.objHero.cHP.toInt().toString() + "/" + instance.objHero.cHPMax.toInt().toString())
+        instance.mpText.setText(instance.objHero.cMP.toInt().toString() + "/" + instance.objHero.cMPMax.toInt().toString())
+        instance.hpRevText.setText("+" + instance.objHero.cRH.toString(1))
+        instance.mpRevText.setText("+" + instance.objHero.cRM.toString(1))
+        instance.adText.setText(instance.objHero.cAD.toInt().toString())
+        instance.apText.setText(instance.objHero.cAP.toInt().toString())
+        instance.arText.setText(instance.objHero.cAR.toInt().toString())
+        instance.mrText.setText(instance.objHero.cMR.toInt().toString())
+        instance.asText.setText(instance.objHero.cAS.toString(2))
+        instance.msText.setText(instance.objHero.cMS.toInt().toString())
+        instance.hpBarBack.setSize(0.136-instance.objHero.cHP/instance.objHero.cHPMax*0.136, 0.012)
+        instance.mpBarBack.setSize(0.136-instance.objHero.cMP/instance.objHero.cMPMax*0.136, 0.012)
 
     
 
