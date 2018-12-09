@@ -1,0 +1,33 @@
+package InputSystem
+import DzHardware
+import IntCastSyncData
+import UIIndex
+
+trigger mousePressedTrigger
+trigger mousePressedSyncTrigger
+
+constant transOffset = 10000
+
+function onMousePressedSync()
+    let data = getTriggerSyncDataDz()
+    let p = getTriggerSyncPlayerDz()
+    let x = data.substring(0, 2).castToInt() - transOffset
+    let y = data.substring(2, 4).castToInt() - transOffset
+    hero.getUnit().issuePointOrder("move", vec2(x.toReal(), y.toReal()))
+
+
+function onMousePressed()
+    // 数据压缩
+    let mouseX = getMouseTerrainX()
+    let mouseY = getMouseTerrainY()
+    let data = (mouseX.toInt() + transOffset).castToSyncData(2) + (mouseY.toInt() + transOffset).castToSyncData(2)
+    hero.getUnit().issuePointOrder("move", vec2(mouseX, mouseY))
+    syncDataDz("MP", data)
+
+
+init
+    registerMouseEventByCode(1, 1, function onMousePressed)
+    mousePressedSyncTrigger = CreateTrigger()
+    ..registerSyncDataDz("MP", false)
+    ..addAction(function onMousePressedSync)
+

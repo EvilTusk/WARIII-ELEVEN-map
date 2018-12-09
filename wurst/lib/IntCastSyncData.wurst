@@ -1,0 +1,22 @@
+package IntCastSyncData
+import ASCIIString
+
+public function int.castToSyncData(int bytes) returns string
+    var cur = this
+    var data = ""
+    for i=1 to bytes
+        let index = cur mod 0xFF
+        data = data + ASCII_CHARSET.substring(index, index + 1)
+        cur = cur div 0xFF
+        
+    print(data)
+    return data
+
+public function string.castToInt() returns int
+    print(this)
+    var num = 0
+    for i=this.length()-1 downto 0
+        num *= 0xFF
+        num += ASCII_CHARSET.indexOf(this.substring(i, i+1))
+    return num
+    

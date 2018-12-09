@@ -3,6 +3,8 @@ import DzFrame
 import StatusBar
 import Yasuo
 
+public Yasuo hero 
+
 init
     Frame.loadToc("ui\\custom.toc")
     Frame.hideInterface()
@@ -17,7 +19,13 @@ init
     ..show(true)
     ..clearAllPoints()
     ..setPoint(FrameAnchorPoint.TOPLEFT, gameUI, FrameAnchorPoint.TOPLEFT, 0.004, -0.004)
-    ..setPoint(FrameAnchorPoint.BOTTOMRIGHT, gameUI, FrameAnchorPoint.BOTTOMRIGHT, -0.004, 0.004)
+    ..setPoint(FrameAnchorPoint.BOTTOMRIGHT, gameUI, FrameAnchorPoint.BOTTOMRIGHT, -0.004, 0.034)
     destroy gameUI
-    StatusBarStruct bar = new StatusBarStruct(new Yasuo()..create(Player(0), vec2(0., 0.), angle(0.)))
+    hero = new Yasuo()
+    StatusBarStruct bar = new StatusBarStruct(hero..create(Player(0), vec2(0., 0.), angle(0.)))
+    
+    CreateTrigger()..registerUnitEvent(hero.getUnit(), EVENT_UNIT_ISSUED_POINT_ORDER)
+    .addAction() ->
+        print(GetOrderPointX().toString() + "," + GetOrderPointY().toString())
+
     bar.show()

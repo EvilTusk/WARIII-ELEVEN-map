@@ -33,6 +33,9 @@ public native DzSetMousePos(integer x, integer y)
 //注册鼠标点击触发（sync为true时，调用TriggerExecute。为false时，直接运行action函数，可以异步不掉线，action里不要有同步操作）
 public native DzTriggerRegisterMouseEvent(trigger trig, integer btn, integer status, boolean sync, string func)
 
+//注册鼠标点击触发（异步）
+public native DzTriggerRegisterMouseEventByCode(trigger trig, integer key, integer status, boolean sync, code funcHandle)
+
 //注册键盘点击触发
 public native DzTriggerRegisterKeyEvent(trigger trig, integer key, integer status, boolean sync, string func)
 
